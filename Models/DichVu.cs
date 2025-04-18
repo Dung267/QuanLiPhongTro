@@ -9,9 +9,9 @@ namespace QuanLiPhongTro.Models
         [Key]
         public int Id { get; set; }
         public string TenDichVu { get; set; }
-
         public decimal DonGia { get; set; }
 
         public ICollection<SuDungDichVu> SuDungDichVus { get; set; }
+
     }
 }

@@ -22,7 +22,7 @@ namespace QuanLiPhongTro.Data
                 }
             }
 
-            // Tạo tài khoản chủ trọ
+            // Tạo tài khoản chủ trọ 
             var chuTroEmail = "chutro@gmail.com";
             var chuTroUser = await quanLyNguoiDung.FindByEmailAsync(chuTroEmail);
             if (chuTroUser == null)
