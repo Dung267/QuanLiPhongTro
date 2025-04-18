@@ -1,17 +1,26 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace QuanLiPhongTro.Models
+﻿namespace QuanLiPhongTro.Models
 {
-    [Table("Thanhtoan")]
-    public class Thanhtoan
+    public class ThanhToan
     {
-        [Key]
-        public int ID { get; set; }
-        public int SoTien { get; set; }
-        public DateTime HanThanhToan { get; set; }
-        public String trangThai { get; set; }// thanh toan chua thanh toan
+        public int Id { get; set; }
 
+        public string NguoiThueId { get; set; } // FK đến ApplicationUser
+        public ApplicationUser NguoiThue { get; set; }
 
+        public int? HopDongId { get; set; } // Gắn với hợp đồng nào (nếu có)
+        public HopDong HopDong { get; set; }
+        public TrangThaiThanhToan trangThaiThanhToan { get; set; } // Trạng thái thanh toán (Đã thanh toán, Chưa thanh toán, Đang chờ xử lý, Đã hủy, ...)
+        public DateTime NgayThanhToan { get; set; }
+
+        public decimal TongTien { get; set; }
+
+        public ICollection<ChiTietThanhToan> ChiTietThanhToans { get; set; }
+    }
+    public enum TrangThaiThanhToan
+    {
+        DaThanhToan,
+        ChuaThanhToan,
+        DangChoXuLy,
+        DaHuy
     }
 }

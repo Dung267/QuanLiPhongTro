@@ -3,16 +3,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QuanLiPhongTro.Models
 {
-    [Table("Trahopdong")]
-    public class Trahopdong
+    [Table("TraHopDong")]
+    public class TraHopDong
     {
         [Key]
-        public int ID { get; set; }
-        
-        public int SoTien { get; set; }
-        public String trangThai { get; set; }
-        public Hopdong Hopdong { get; set; }
+        public int Id { get; set; }
 
+        public DateTime NgayTra { get; set; }
+
+        public string LyDo { get; set; }
+
+        public int HopDongId { get; set; }
+
+        public HopDong HopDong { get; set; }
 
     }
 }
