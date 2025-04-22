@@ -7,16 +7,31 @@ namespace QuanLiPhongTro.Models
     public class Phong
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
+        [Required]
+        [Display(Name = "Tên Phòng")]
         public string TenPhong { get; set; }
+
+        [Required]
+        [Display(Name = "Số Người Tối Đa")]
         public int SoNguoiToiDa { get; set; }
+
+        [Required]
+        [Display(Name = "Giá Tiền")]
+        [DataType(DataType.Currency)]
         public decimal GiaTien { get; set; }
-        public bool DaThue { get; set; }
 
-        public int ToaNhaId { get; set; }
-        public ToaNha ToaNha { get; set; }
+        [Display(Name = "Đã Cho Thuê")]
+        public bool DaChoThue { get; set; }
 
-        public ICollection<HopDong> HopDongs { get; set; }
-        public ICollection<SuCo> SuCos { get; set; }
+        [Required]
+        public string ToaNhaId { get; set; }
+
+        [ForeignKey("ToaNhaId")]
+        public virtual ToaNha ToaNha { get; set; }
+        public ICollection<HopDong> HopDongs { get; set; } = new List<HopDong>();
+
     }
 }

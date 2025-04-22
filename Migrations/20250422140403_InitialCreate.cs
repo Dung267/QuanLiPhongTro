@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace QuanLiPhongTro.Data.Migrations
+namespace QuanLiPhongTro.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -11,67 +11,44 @@ namespace QuanLiPhongTro.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "AspNetUserTokens",
-                type: "nvarchar(450)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(128)",
-                oldMaxLength: 128);
+            migrationBuilder.CreateTable(
+                name: "AspNetRoles",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
 
-            migrationBuilder.AlterColumn<string>(
-                name: "LoginProvider",
-                table: "AspNetUserTokens",
-                type: "nvarchar(450)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(128)",
-                oldMaxLength: 128);
-
-            migrationBuilder.AddColumn<string>(
-                name: "DiaChi",
-                table: "AspNetUsers",
-                type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Discriminator",
-                table: "AspNetUsers",
-                type: "nvarchar(21)",
-                maxLength: 21,
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddColumn<string>(
-                name: "HoTen",
-                table: "AspNetUsers",
-                type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "SoDienThoai",
-                table: "AspNetUsers",
-                type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "ProviderKey",
-                table: "AspNetUserLogins",
-                type: "nvarchar(450)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(128)",
-                oldMaxLength: 128);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "LoginProvider",
-                table: "AspNetUserLogins",
-                type: "nvarchar(450)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(128)",
-                oldMaxLength: 128);
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "DichVu",
@@ -79,7 +56,7 @@ namespace QuanLiPhongTro.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TenDichVu = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenDichVu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DonGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
@@ -88,20 +65,53 @@ namespace QuanLiPhongTro.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "NguoiThue",
+                name: "ToaNha",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TenToa = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ToaNha", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CCCD = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SDT = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NguoiThue", x => x.Id);
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_NguoiThue_AspNetUsers_UserId",
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -109,16 +119,86 @@ namespace QuanLiPhongTro.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ToaNha",
+                name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TenToa = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ToaNha", x => x.Id);
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NguoiThue",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CCCD = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
+                    SDT = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NguoiThue", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_NguoiThue_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -130,8 +210,8 @@ namespace QuanLiPhongTro.Data.Migrations
                     TenPhong = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SoNguoiToiDa = table.Column<int>(type: "int", nullable: false),
                     GiaTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    DaThue = table.Column<bool>(type: "bit", nullable: false),
-                    ToaNhaId = table.Column<int>(type: "int", nullable: false)
+                    DaChoThue = table.Column<bool>(type: "bit", nullable: false),
+                    ToaNhaId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -156,7 +236,7 @@ namespace QuanLiPhongTro.Data.Migrations
                     DaTra = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PhongId = table.Column<int>(type: "int", nullable: false),
-                    NguoiThueId = table.Column<int>(type: "int", nullable: true)
+                    NguoiThueUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -168,10 +248,10 @@ namespace QuanLiPhongTro.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_HopDong_NguoiThue_NguoiThueId",
-                        column: x => x.NguoiThueId,
+                        name: "FK_HopDong_NguoiThue_NguoiThueUserId",
+                        column: x => x.NguoiThueUserId,
                         principalTable: "NguoiThue",
-                        principalColumn: "Id");
+                        principalColumn: "UserId");
                     table.ForeignKey(
                         name: "FK_HopDong_Phong_PhongId",
                         column: x => x.PhongId,
@@ -186,7 +266,7 @@ namespace QuanLiPhongTro.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MoTa = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     NgayBaoCao = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DaGiaiQuyet = table.Column<bool>(type: "bit", nullable: false),
                     PhongId = table.Column<int>(type: "int", nullable: false)
@@ -237,7 +317,7 @@ namespace QuanLiPhongTro.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NguoiThueId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     HopDongId = table.Column<int>(type: "int", nullable: true),
                     trangThaiThanhToan = table.Column<int>(type: "int", nullable: false),
                     NgayThanhToan = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -247,8 +327,8 @@ namespace QuanLiPhongTro.Data.Migrations
                 {
                     table.PrimaryKey("PK_ThanhToans", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ThanhToans_AspNetUsers_NguoiThueId",
-                        column: x => x.NguoiThueId,
+                        name: "FK_ThanhToans_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -266,7 +346,7 @@ namespace QuanLiPhongTro.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NgayTra = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LyDo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LyDo = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     HopDongId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -281,21 +361,21 @@ namespace QuanLiPhongTro.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ChiTietThanhtoan",
+                name: "ChiTietThanhToan",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ThanhToanId = table.Column<int>(type: "int", nullable: false),
-                    Loai = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Loai = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    MoTa = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     SoTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChiTietThanhtoan", x => x.Id);
+                    table.PrimaryKey("PK_ChiTietThanhToan", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ChiTietThanhtoan_ThanhToans_ThanhToanId",
+                        name: "FK_ChiTietThanhToan_ThanhToans_ThanhToanId",
                         column: x => x.ThanhToanId,
                         principalTable: "ThanhToans",
                         principalColumn: "Id",
@@ -310,8 +390,8 @@ namespace QuanLiPhongTro.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ThanhToanId = table.Column<int>(type: "int", nullable: false),
                     NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NguoiLap = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NguoiLap = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    GhiChu = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     HopDongId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -331,8 +411,47 @@ namespace QuanLiPhongTro.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChiTietThanhtoan_ThanhToanId",
-                table: "ChiTietThanhtoan",
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChiTietThanhToan_ThanhToanId",
+                table: "ChiTietThanhToan",
                 column: "ThanhToanId");
 
             migrationBuilder.CreateIndex(
@@ -346,9 +465,9 @@ namespace QuanLiPhongTro.Data.Migrations
                 column: "ThanhToanId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HopDong_NguoiThueId",
+                name: "IX_HopDong_NguoiThueUserId",
                 table: "HopDong",
-                column: "NguoiThueId");
+                column: "NguoiThueUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HopDong_PhongId",
@@ -358,11 +477,6 @@ namespace QuanLiPhongTro.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_HopDong_UserId",
                 table: "HopDong",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_NguoiThue_UserId",
-                table: "NguoiThue",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -391,9 +505,9 @@ namespace QuanLiPhongTro.Data.Migrations
                 column: "HopDongId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ThanhToans_NguoiThueId",
+                name: "IX_ThanhToans_UserId",
                 table: "ThanhToans",
-                column: "NguoiThueId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TraHopDong_HopDongId",
@@ -405,7 +519,22 @@ namespace QuanLiPhongTro.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ChiTietThanhtoan");
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "ChiTietThanhToan");
 
             migrationBuilder.DropTable(
                 name: "HoaDon");
@@ -418,6 +547,9 @@ namespace QuanLiPhongTro.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "TraHopDong");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "ThanhToans");
@@ -435,59 +567,10 @@ namespace QuanLiPhongTro.Data.Migrations
                 name: "Phong");
 
             migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
                 name: "ToaNha");
-
-            migrationBuilder.DropColumn(
-                name: "DiaChi",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "Discriminator",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "HoTen",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "SoDienThoai",
-                table: "AspNetUsers");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "AspNetUserTokens",
-                type: "nvarchar(128)",
-                maxLength: 128,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(450)");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "LoginProvider",
-                table: "AspNetUserTokens",
-                type: "nvarchar(128)",
-                maxLength: 128,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(450)");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "ProviderKey",
-                table: "AspNetUserLogins",
-                type: "nvarchar(128)",
-                maxLength: 128,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(450)");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "LoginProvider",
-                table: "AspNetUserLogins",
-                type: "nvarchar(128)",
-                maxLength: 128,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(450)");
         }
     }
 }

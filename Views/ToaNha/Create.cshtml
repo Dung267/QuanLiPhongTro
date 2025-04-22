@@ -1,0 +1,30 @@
+﻿@model QuanLiPhongTro.Models.ToaNha
+@{
+    ViewData["Title"] = "Thêm Tòa Nhà";
+}
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Id" class="form-label">Mã Tòa Nhà</label>
+        <input asp-for="Id" class="form-control" placeholder="T01, TN10..." />
+        <span asp-validation-for="Id" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TenToa" class="form-label">Tên Tòa Nhà</label>
+        <input asp-for="TenToa" class="form-control" placeholder="Nhập tên tòa nhà" />
+        <span asp-validation-for="TenToa" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Lưu</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
