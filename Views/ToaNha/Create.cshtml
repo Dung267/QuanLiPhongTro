@@ -20,6 +20,19 @@
     </div>
 
     <button type="submit" class="btn btn-success">Lưu</button>
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-warning">
+            <strong>Lỗi nhập liệu:</strong>
+            <ul>
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+
     <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
 </form>
 

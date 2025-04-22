@@ -327,8 +327,9 @@ namespace QuanLiPhongTro.Migrations
                     b.Property<string>("NguoiThueUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("PhongId")
-                        .HasColumnType("int");
+                    b.Property<string>("PhongId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("TienCoc")
                         .HasColumnType("decimal(18,2)");
@@ -370,11 +371,8 @@ namespace QuanLiPhongTro.Migrations
 
             modelBuilder.Entity("QuanLiPhongTro.Models.Phong", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("DaChoThue")
                         .HasColumnType("bit");
@@ -419,8 +417,9 @@ namespace QuanLiPhongTro.Migrations
                     b.Property<DateTime>("NgayBaoCao")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PhongId")
-                        .HasColumnType("int");
+                    b.Property<string>("PhongId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -446,8 +445,9 @@ namespace QuanLiPhongTro.Migrations
                     b.Property<int>("DichVuId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PhongId")
-                        .HasColumnType("int");
+                    b.Property<string>("PhongId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("ThangNam")
                         .HasColumnType("datetime2");

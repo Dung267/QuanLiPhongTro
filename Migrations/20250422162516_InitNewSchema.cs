@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace QuanLiPhongTro.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitNewSchema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -205,8 +205,7 @@ namespace QuanLiPhongTro.Migrations
                 name: "Phong",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     TenPhong = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SoNguoiToiDa = table.Column<int>(type: "int", nullable: false),
                     GiaTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -235,7 +234,7 @@ namespace QuanLiPhongTro.Migrations
                     TienCoc = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     DaTra = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PhongId = table.Column<int>(type: "int", nullable: false),
+                    PhongId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     NguoiThueUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -269,7 +268,7 @@ namespace QuanLiPhongTro.Migrations
                     MoTa = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     NgayBaoCao = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DaGiaiQuyet = table.Column<bool>(type: "bit", nullable: false),
-                    PhongId = table.Column<int>(type: "int", nullable: false)
+                    PhongId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -292,7 +291,7 @@ namespace QuanLiPhongTro.Migrations
                     ChiSoMoi = table.Column<int>(type: "int", nullable: false),
                     ThangNam = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DichVuId = table.Column<int>(type: "int", nullable: false),
-                    PhongId = table.Column<int>(type: "int", nullable: false)
+                    PhongId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {

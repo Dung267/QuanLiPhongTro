@@ -37,55 +37,72 @@ namespace QuanLiPhongTro.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Phong model)
+        public async Task<IActionResult> Create([Bind("Id,TenPhong,SoNguoiToiDa,GiaTien,DaChoThue,ToaNhaId")] Phong model)
         {
             if (ModelState.IsValid)
             {
-                _context.Phongs.Add(model);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (await _context.Phongs.AnyAsync(p => p.Id == model.Id))
+                {
+                    ModelState.AddModelError("Id", "Mã phòng đã tồn tại.");
+                }
+                else
+                {
+                    _context.Phongs.Add(model);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Thêm phòng thành công.";
+                    return RedirectToAction(nameof(Index));
+                }
             }
+
             ViewBag.ToaNhaList = new SelectList(_context.ToaNhas, "Id", "TenToa", model.ToaNhaId);
             return View(model);
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(string id)
         {
             var model = await _context.Phongs.FindAsync(id);
+            if (model == null) return NotFound();
+
             ViewBag.ToaNhaList = new SelectList(_context.ToaNhas, "Id", "TenToa", model.ToaNhaId);
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Phong model)
+        public async Task<IActionResult> Edit(string id, Phong model)
         {
             if (id != model.Id) return NotFound();
             if (ModelState.IsValid)
             {
                 _context.Update(model);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Cập nhật phòng thành công.";
                 return RedirectToAction(nameof(Index));
             }
+
             ViewBag.ToaNhaList = new SelectList(_context.ToaNhas, "Id", "TenToa", model.ToaNhaId);
             return View(model);
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             var model = await _context.Phongs.Include(p => p.ToaNha).FirstOrDefaultAsync(p => p.Id == id);
+            if (model == null) return NotFound();
+
             return View(model);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var model = await _context.Phongs.FindAsync(id);
+            if (model == null) return NotFound();
+
             _context.Phongs.Remove(model);
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Xóa phòng thành công.";
             return RedirectToAction(nameof(Index));
         }
     }
-
 }

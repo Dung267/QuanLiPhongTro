@@ -23,7 +23,7 @@ namespace QuanLiPhongTro.Models
 
         [Required]
         [Display(Name = "Phòng Gặp Sự Cố")]
-        public int PhongId { get; set; }
+        public String PhongId { get; set; }
 
         [ForeignKey("PhongId")]
         public Phong Phong { get; set; }

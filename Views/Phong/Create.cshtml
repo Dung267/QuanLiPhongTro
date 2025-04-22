@@ -5,6 +5,13 @@
 <form asp-action="Create">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+    <div class="form-group mb-3">
+        <label asp-for="Id"></label>
+        <input asp-for="Id" class="form-control" placeholder="Nhập mã phòng (P01, A101...)" />
+        <span asp-validation-for="Id" class="text-danger"></span>
+    </div>
+
+
     <div class="form-group">
         <label asp-for="TenPhong"></label>
         <input asp-for="TenPhong" class="form-control" />
@@ -24,18 +31,30 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="DaChoThue"></label>
-        <input asp-for="DaChoThue" class="form-check-input" />
-        <span asp-validation-for="DaChoThue" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
         <label asp-for="ToaNhaId">Thuộc Toà Nhà</label>
         <select asp-for="ToaNhaId" class="form-control" asp-items="ViewBag.ToaNhaList"></select>
         <span asp-validation-for="ToaNhaId" class="text-danger"></span>
     </div>
 
+    <div class="form-group">
+        <label asp-for="DaChoThue"></label>
+        <input asp-for="DaChoThue" class="form-check-input" />
+        <span asp-validation-for="DaChoThue" class="text-danger"></span>
+    </div>
+
     <button type="submit" class="btn btn-success">Lưu</button>
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-warning">
+            <strong>Lỗi nhập liệu:</strong>
+            <ul>
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
 </form>
 
 @section Scripts {
