@@ -1,0 +1,31 @@
+﻿@model IEnumerable<QuanLiPhongTro.Models.SuCo>
+
+@{
+    ViewData["Title"] = "Sự cố đã báo cáo";
+}
+
+<h2>Sự cố bạn đã báo cáo</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Phòng</th>
+            <th>Ngày báo cáo</th>
+            <th>Mô tả</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var suCo in Model)
+        {
+            <tr>
+                <td>@suCo.Phong.TenPhong</td>
+                <td>@suCo.NgayBaoCao.ToShortDateString()</td>
+                <td>@suCo.MoTa</td>
+                <td>@(suCo.DaGiaiQuyet ? "Đã giải quyết" : "Chưa giải quyết")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

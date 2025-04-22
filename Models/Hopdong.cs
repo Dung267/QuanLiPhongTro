@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QuanLiPhongTro.Models
@@ -14,7 +15,7 @@ namespace QuanLiPhongTro.Models
         public bool DaTra { get; set; }
 
         public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public IdentityUser User { get; set; }
 
         public int PhongId { get; set; }
         public Phong Phong { get; set; }

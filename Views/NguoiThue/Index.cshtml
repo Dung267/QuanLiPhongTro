@@ -1,0 +1,35 @@
+﻿@model QuanLiPhongTro.Models.DashboardNguoiThueViewModel
+
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<h2>Chào mừng đến trang người thuê</h2>
+
+<h3>Hợp đồng hiện tại</h3>
+@if (Model.HopDongHienTai != null)
+{
+    <p>Phòng: @Model.HopDongHienTai.Phong.TenPhong</p>
+    <p>Ngày bắt đầu: @Model.HopDongHienTai.NgayBatDau.ToShortDateString()</p>
+}
+else
+{
+    <p>Bạn chưa có hợp đồng hiện tại.</p>
+}
+
+<h3>Hóa đơn gần đây</h3>
+<ul>
+    @foreach (var hd in Model.HoaDons)
+    {
+        <li>@hd.NgayThanhToan.ToShortDateString() - @hd.TongTien.ToString("C") - @hd.trangThaiThanhToan</li>
+    }
+</ul>
+
+<h3>Sự cố gần đây</h3>
+<ul>
+    @foreach (var sc in Model.SuCos)
+    {
+        <li>@sc.NgayBaoCao.ToShortDateString() - @sc.MoTa</li>
+    }
+</ul>
+

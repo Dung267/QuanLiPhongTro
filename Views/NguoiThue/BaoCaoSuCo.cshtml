@@ -1,0 +1,17 @@
+﻿@model QuanLiPhongTro.Models.SuCo
+
+@{
+    ViewData["Title"] = "Báo cáo sự cố";
+}
+
+<h2>Báo cáo sự cố</h2>
+
+<form asp-action="BaoCaoSuCo" method="post">
+    <div class="form-group">
+        <label asp-for="MoTa"></label>
+        <textarea asp-for="MoTa" class="form-control"></textarea>
+        <span asp-validation-for="MoTa" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Gửi báo cáo</button>
+</form>
+

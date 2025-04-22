@@ -1,0 +1,31 @@
+﻿@model QuanLiPhongTro.Models.ThanhToan
+
+@{
+    ViewData["Title"] = "Chi tiết thanh toán";
+}
+
+<h2>Chi tiết thanh toán</h2>
+
+<p><strong>Ngày thanh toán:</strong> @Model.NgayThanhToan</p>
+<p><strong>Tổng tiền:</strong> @Model.TongTien.ToString("C")</p>
+<p><strong>Trạng thái:</strong> @Model.trangThaiThanhToan</p>
+
+<h3>Chi tiết:</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nội dung</th>
+            <th>Thành tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ct in Model.ChiTietThanhToans)
+        {
+            <tr>
+                <td>@ct.MoTa</td>
+                <td>@ct.SoTien.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

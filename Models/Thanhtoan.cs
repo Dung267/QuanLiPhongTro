@@ -1,11 +1,13 @@
-﻿namespace QuanLiPhongTro.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace QuanLiPhongTro.Models
 {
     public class ThanhToan
     {
         public int Id { get; set; }
 
-        public string NguoiThueId { get; set; } // FK đến ApplicationUser
-        public ApplicationUser NguoiThue { get; set; }
+        public string UserId { get; set; } // FK đến ApplicationUser
+        public IdentityUser User { get; set; }
 
         public int? HopDongId { get; set; } // Gắn với hợp đồng nào (nếu có)
         public HopDong HopDong { get; set; }

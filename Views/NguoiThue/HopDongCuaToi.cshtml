@@ -1,0 +1,20 @@
+﻿@model QuanLiPhongTro.Models.HopDong
+
+@{
+    ViewData["Title"] = "Hợp đồng của tôi";
+}
+
+<h2>Hợp đồng hiện tại</h2>
+
+@if (Model != null)
+{
+    <p><strong>Phòng:</strong> @Model.Phong.TenPhong</p>
+    <p><strong>Tòa nhà:</strong> @Model.Phong.ToaNha.TenToa</p>
+    <p><strong>Ngày bắt đầu:</strong> @Model.NgayBatDau.ToShortDateString()</p>
+    <p><strong>Ngày kết thúc:</strong> @Model.NgayKetThuc.ToShortDateString()</p>
+}
+else
+{
+    <p>Bạn chưa có hợp đồng hiện tại.</p>
+}
+

@@ -1,0 +1,32 @@
+﻿@model IEnumerable<QuanLiPhongTro.Models.ThanhToan>
+
+@{
+    ViewData["Title"] = "Hóa đơn của tôi";
+}
+
+<h2>Hóa đơn</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Ngày thanh toán</th>
+            <th>Tổng tiền</th>
+            <th>Trạng thái</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var hd in Model)
+        {
+            <tr>
+                <td>@hd.NgayThanhToan.ToShortDateString()</td>
+                <td>@hd.TongTien.ToString("C")</td>
+                <td>@hd.trangThaiThanhToan</td>
+                <td>
+                    <a asp-action="ChiTietThanhToan" asp-route-id="@hd.Id">Chi tiết</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
