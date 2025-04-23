@@ -1,32 +1,44 @@
 ﻿@model IEnumerable<QuanLiPhongTro.Models.Phong>
+@{
+    ViewData["Title"] = "Danh sách Phòng";
+}
 
-<h2>Danh sách Phòng</h2>
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
 
 <a asp-action="Create" class="btn btn-success mb-3">+ Thêm Phòng</a>
 
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
+            <th>Mã Phòng</th>
             <th>Tên Phòng</th>
             <th>Số Người Tối Đa</th>
             <th>Giá Tiền</th>
             <th>Trạng Thái</th>
-            <th>Toà Nhà</th>
-            <th></th>
+            <th class="text-center">Hành động</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var p in Model)
+        @foreach (var item in Model)
         {
             <tr>
-                <td>@p.TenPhong</td>
-                <td>@p.SoNguoiToiDa</td>
-                <td>@String.Format("{0:#,##0} VND", p.GiaTien)</td>
-                <td>@(p.DaChoThue ? "Đã cho thuê" : "Phòng trống")</td>
-                <td>@p.ToaNha?.TenToa</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-primary">Sửa</a>
-                    <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-sm btn-danger">Xoá</a>
+                <td>@item.Id</td>
+                <td>@item.TenPhong</td>
+                <td>@item.SoNguoiToiDa</td>
+                <td>@item.GiaTien</td>
+                <td>@(item.DaChoThue ? "Đã Cho Thuê" : "Chưa Cho Thuê")</td>
+                <td class="text-center">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Sửa</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Xóa</a>
                 </td>
             </tr>
         }

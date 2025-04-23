@@ -1,55 +1,28 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QuanLiPhongTro.Models
 {
     public class ThanhToan
     {
-        [Key]
         public int Id { get; set; }
 
-        [Required]
-        public string UserId { get; set; }
-
-        [ForeignKey("UserId")]
+        public string UserId { get; set; } // FK đến ApplicationUser
         public IdentityUser User { get; set; }
 
-        public int? HopDongId { get; set; }
-
-        [ForeignKey("HopDongId")]
+        public int? HopDongId { get; set; } // Gắn với hợp đồng nào (nếu có)
         public HopDong HopDong { get; set; }
-
-        [Required]
-        [Display(Name = "Trạng Thái Thanh Toán")]
-        public TrangThaiThanhToan trangThaiThanhToan { get; set; }
-
-        [Required]
-        [Display(Name = "Ngày Thanh Toán")]
-        [DataType(DataType.Date)]
+        public TrangThaiThanhToan trangThaiThanhToan { get; set; } // Trạng thái thanh toán (Đã thanh toán, Chưa thanh toán, Đang chờ xử lý, Đã hủy, ...)
         public DateTime NgayThanhToan { get; set; }
 
-        [Required]
-        [Range(0, 999999999, ErrorMessage = "Số tiền không hợp lệ")]
-        [Display(Name = "Tổng Tiền")]
-        [DataType(DataType.Currency)]
         public decimal TongTien { get; set; }
 
-        public ICollection<ChiTietThanhToan> ChiTietThanhToans { get; set; } = new List<ChiTietThanhToan>();
+        public ICollection<ChiTietThanhToan> ChiTietThanhToans { get; set; }
     }
-
     public enum TrangThaiThanhToan
     {
-        [Display(Name = "Đã Thanh Toán")]
         DaThanhToan,
-
-        [Display(Name = "Chưa Thanh Toán")]
         ChuaThanhToan,
-
-        [Display(Name = "Đang Chờ Xử Lý")]
         DangChoXuLy,
-
-        [Display(Name = "Đã Hủy")]
         DaHuy
     }
 }

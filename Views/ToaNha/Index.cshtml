@@ -1,26 +1,41 @@
 ﻿@model IEnumerable<QuanLiPhongTro.Models.ToaNha>
+@{
+    ViewData["Title"] = "Danh sách Tòa Nhà";
+}
 
-<h2>Danh sách Tòa Nhà</h2>
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
 
 <a asp-action="Create" class="btn btn-success mb-3">+ Thêm Tòa Nhà</a>
 
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
+            <th>Mã Tòa Nhà</th>
             <th>Tên Tòa Nhà</th>
-            <th></th>
+            <th class="text-center">Hành động</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
+                <td>@item.Id</td>
                 <td>@item.TenToa</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Sửa</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Xoá</a>
+                <td class="text-center">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Sửa</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Xóa</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+

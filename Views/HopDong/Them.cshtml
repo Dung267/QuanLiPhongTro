@@ -1,0 +1,53 @@
+﻿@model QuanLiPhongTro.Models.HopDongViewModel
+
+@{
+    ViewData["Title"] = "Thêm Hợp Đồng";
+}
+
+<div class="container">
+    <h2 class="my-4">@ViewData["Title"]</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="Them">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="UserId" class="control-label">Người Thuê</label>
+                    @if (Model.DanhSachNguoiThue.Any())
+                    {
+                        <select asp-for="UserId" asp-items="Model.DanhSachNguoiThue" class="form-control">
+                            <option value="">-- Chọn người thuê --</option>
+                        </select>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">
+                            Không có người dùng nào khả dụng. Vui lòng đăng ký tài khoản mới.
+                            <a asp-controller="Account" asp-action="Register" class="alert-link">Đăng ký ngay</a>
+                        </div>
+                    }
+                    <span asp-validation-for="UserId" class="text-danger"></span>
+                </div>
+
+                <!-- Các trường khác giữ nguyên -->
+                <div class="form-group mb-3">
+                    <label asp-for="PhongId" class="control-label">Phòng</label>
+                    <select asp-for="PhongId" asp-items="Model.DanhSachPhong" class="form-control">
+                        <option value="">-- Chọn phòng --</option>
+                    </select>
+                    <span asp-validation-for="PhongId" class="text-danger"></span>
+                </div>
+
+                <!-- Các trường khác... -->
+
+                <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-primary" @(!Model.DanhSachNguoiThue.Any() ? "disabled" : "")>
+                        Thêm Hợp Đồng
+                    </button>
+                    <a asp-action="DanhSach" class="btn btn-secondary">Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

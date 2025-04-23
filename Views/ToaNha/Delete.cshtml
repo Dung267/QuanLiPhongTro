@@ -4,15 +4,10 @@
 }
 <h2>@ViewData["Title"]</h2>
 
-<h4>Bạn có chắc muốn xóa tòa nhà này?</h4>
+<p>Are you sure you want to delete the building <strong>@Model.TenToa</strong>?</p>
 
-<div class="mb-3">
-    <strong>Mã:</strong> @Model.Id<br />
-    <strong>Tên:</strong> @Model.TenToa
-</div>
-
-<form asp-action="Delete">
-    <input type="hidden" asp-for="Id" />
-    <button type="submit" class="btn btn-danger">Xóa</button>
-    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">No, Go Back</a>
 </form>
