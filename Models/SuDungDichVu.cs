@@ -31,7 +31,11 @@ namespace QuanLiPhongTro.Models
         public DichVu DichVu { get; set; }
 
         [Required]
+<<<<<<< HEAD
         public int PhongId { get; set; }
+=======
+        public String PhongId { get; set; }
+>>>>>>> origin/Ngoc
 
         [ForeignKey("PhongId")]
         public Phong Phong { get; set; }

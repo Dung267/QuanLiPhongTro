@@ -10,7 +10,7 @@ namespace QuanLiPhongTro.Models
             public string UserId { get; set; }
 
             [Required]
-            public int PhongId { get; set; }
+            public String PhongId { get; set; }
 
             [Required]
             [DataType(DataType.Date)]

@@ -1,0 +1,58 @@
+﻿<!-- IEnumerable<QuanLiPhongTro.Models.NhanVienViewModel>-->
+
+<h2>Quản Lý Nhân Viên Quản Lý</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<table class="table table-striped table-bordered">
+    <thead class="table-primary">
+        <tr>
+            <th>Email</th>
+            <th>Trạng thái khóa</th>
+            <th>Tiến độ xử lý</th>
+            <th class="text-end">Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Email</td>
+                <td>
+                    @if (item.IsLocked)
+                    {
+                        <span class="badge bg-danger">Đã khóa</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Đang hoạt động</span>
+                    }
+                </td>
+                <td>
+                    <span>@item.TienDoXuLy</span>
+                </td>
+                <td class="text-end">
+                    <form asp-action="KhoaTaiKhoan" method="post" class="d-inline">
+                        <input type="hidden" name="userId" value="@item.UserId" />
+                        <button type="submit" class="btn btn-warning btn-sm" onclick="return confirm('Xác nhận khóa tài khoản này?')">
+                            <i class="fas fa-lock"></i> Khóa
+                        </button>
+                    </form>
+                    <form asp-action="ResetMatKhau" method="post" class="d-inline ms-1">
+                        <input type="hidden" name="userId" value="@item.UserId" />
+                        <button type="submit" class="btn btn-secondary btn-sm" onclick="return confirm('Xác nhận reset mật khẩu?')">
+                            <i class="fas fa-sync"></i> Reset
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

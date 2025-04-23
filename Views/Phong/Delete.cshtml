@@ -1,4 +1,5 @@
 ﻿@model QuanLiPhongTro.Models.Phong
+<<<<<<< HEAD
 
 <h2>Xoá Phòng</h2>
 
@@ -8,4 +9,17 @@
     <input type="hidden" asp-for="Id" />
     <button type="submit" class="btn btn-danger">Xoá</button>
     <a asp-action="Index" class="btn btn-secondary">Huỷ</a>
+=======
+@{
+    ViewData["Title"] = "Xóa Phòng";
+}
+<h2>@ViewData["Title"]</h2>
+
+<p>Are you sure you want to delete the room <strong>@Model.TenPhong</strong>?</p>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">No, Go Back</a>
+>>>>>>> origin/Ngoc
 </form>
