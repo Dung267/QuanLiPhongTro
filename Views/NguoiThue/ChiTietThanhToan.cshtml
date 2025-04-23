@@ -4,17 +4,37 @@
     ViewData["Title"] = "Chi tiết thanh toán";
 }
 
-<h2>Chi tiết thanh toán</h2>
+<h2 class="mb-4">Chi tiết thanh toán</h2>
 
-<p><strong>Ngày thanh toán:</strong> @Model.NgayThanhToan</p>
-<p><strong>Tổng tiền:</strong> @Model.TongTien.ToString("C")</p>
-<p><strong>Trạng thái:</strong> @Model.trangThaiThanhToan</p>
+<div class="mb-3">
+    <p><strong>Ngày thanh toán:</strong> @Model.NgayThanhToan.ToString("dd/MM/yyyy")</p>
+    <p><strong>Tổng tiền:</strong> @Model.TongTien.ToString("C")</p>
+    <p>
+        <strong>Trạng thái:</strong>
+        @switch (Model.trangThaiThanhToan)
+        {
+            case TrangThaiThanhToan.ChuaThanhToan:
+                <span class="text-danger fw-bold">Chưa thanh toán</span>
+                break;
+            case TrangThaiThanhToan.DangChoXuLy:
+                <span class="text-warning fw-bold">Đang chờ xử lý</span>
+                break;
+            case TrangThaiThanhToan.DaThanhToan:
+                <span class="text-success fw-bold">Đã thanh toán</span>
+                break;
+            case TrangThaiThanhToan.DaHuy:
+                <span class="text-muted">Đã hủy</span>
+                break;
+        }
+    </p>
+</div>
 
-<h3>Chi tiết:</h3>
-<table class="table">
+<h4>Chi tiết các khoản:</h4>
+<table class="table table-bordered">
     <thead>
         <tr>
-            <th>Nội dung</th>
+            <th>Loại</th>
+            <th>Mô tả</th>
             <th>Thành tiền</th>
         </tr>
     </thead>
@@ -22,6 +42,7 @@
         @foreach (var ct in Model.ChiTietThanhToans)
         {
             <tr>
+                <td>@ct.Loai</td>
                 <td>@ct.MoTa</td>
                 <td>@ct.SoTien.ToString("C")</td>
             </tr>
@@ -29,3 +50,26 @@
     </tbody>
 </table>
 
+@if (Model.trangThaiThanhToan == TrangThaiThanhToan.ChuaThanhToan)
+{
+    <form asp-action="XacNhanThanhToan" asp-controller="NguoiThue" method="post" class="mt-4">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button type="submit" class="btn btn-primary"
+                onclick="return confirm('Bạn chắc chắn muốn gửi xác nhận đã thanh toán?')">
+            Tôi đã thanh toán
+        </button>
+    </form>
+}
+else if (Model.trangThaiThanhToan == TrangThaiThanhToan.DangChoXuLy)
+{
+    <div class="alert alert-info mt-4">
+        <i class="bi bi-info-circle"></i> Bạn đã gửi xác nhận thanh toán. Vui lòng chờ chủ trọ kiểm tra.
+    </div>
+}
+else if (Model.trangThaiThanhToan == TrangThaiThanhToan.DaThanhToan)
+{
+    <div class="alert alert-success mt-4">
+        <i class="bi bi-check-circle"></i> Hóa đơn đã được xác nhận thanh toán.
+    </div>
+}

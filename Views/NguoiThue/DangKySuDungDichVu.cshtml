@@ -1,0 +1,36 @@
+﻿@model QuanLiPhongTro.Models.SuDungDichVu
+
+@{
+    ViewData["Title"] = "Đăng ký sử dụng dịch vụ";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="DangKySuDungDichVu" method="post">
+    <div class="form-group">
+        <label asp-for="DichVuId"></label>
+        <select asp-for="DichVuId" class="form-control" asp-items="ViewBag.DichVus"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ChiSoCu"></label>
+        <input asp-for="ChiSoCu" class="form-control" />
+        <span asp-validation-for="ChiSoCu" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ChiSoMoi"></label>
+        <input asp-for="ChiSoMoi" class="form-control" />
+        <span asp-validation-for="ChiSoMoi" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ThangNam"></label>
+        <input asp-for="ThangNam" class="form-control" type="month" />
+        <span asp-validation-for="ThangNam" class="text-danger"></span>
+    </div>
+
+    <input type="hidden" name="PhongId" value="@ViewBag.PhongId" />
+
+    <button type="submit" class="btn btn-primary">Đăng ký</button>
+</form>

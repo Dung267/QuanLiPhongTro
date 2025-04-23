@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanLiPhongTro.Data;
 using QuanLiPhongTro.Models;
@@ -13,7 +14,6 @@ namespace QuanLiPhongTro.Controllers
         private readonly ApplicationDbContext _context = context;
         private readonly UserManager<IdentityUser> _userManager = userManager;
 
-        // Xem hợp đồng hiện tại của người thuê
         public async Task<IActionResult> HopDongCuaToi()
         {
             try
@@ -21,9 +21,7 @@ namespace QuanLiPhongTro.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 if (user == null) return NotFound("Người dùng không tồn tại");
 
-                var nguoiThue = await _context.NguoiThues
-                    .FirstOrDefaultAsync(n => n.UserId == user.Id);
-
+                var nguoiThue = await _context.NguoiThues.FirstOrDefaultAsync(n => n.UserId == user.Id);
                 if (nguoiThue == null) return NotFound("Thông tin người thuê không tồn tại");
 
                 var hopDong = await _context.HopDongs
@@ -43,7 +41,6 @@ namespace QuanLiPhongTro.Controllers
             }
         }
 
-        // Xem danh sách hóa đơn
         public async Task<IActionResult> HoaDonCuaToi()
         {
             try
@@ -51,9 +48,7 @@ namespace QuanLiPhongTro.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 if (user == null) return NotFound();
 
-                var nguoiThue = await _context.NguoiThues
-                    .FirstOrDefaultAsync(n => n.UserId == user.Id);
-
+                var nguoiThue = await _context.NguoiThues.FirstOrDefaultAsync(n => n.UserId == user.Id);
                 if (nguoiThue == null) return NotFound();
 
                 var hoaDons = await _context.ThanhToans
@@ -71,12 +66,9 @@ namespace QuanLiPhongTro.Controllers
             }
         }
 
-        // Báo cáo sự cố
+
         [HttpGet]
-        public IActionResult BaoCaoSuCo()
-        {
-            return View();
-        }
+        public IActionResult BaoCaoSuCo() => View();
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -89,12 +81,9 @@ namespace QuanLiPhongTro.Controllers
                     var user = await _userManager.GetUserAsync(User);
                     if (user == null) return NotFound();
 
-                    var nguoiThue = await _context.NguoiThues
-                        .FirstOrDefaultAsync(n => n.UserId == user.Id);
-
+                    var nguoiThue = await _context.NguoiThues.FirstOrDefaultAsync(n => n.UserId == user.Id);
                     if (nguoiThue == null) return NotFound();
 
-                    // Lấy phòng hiện tại của người thuê
                     var phong = await _context.HopDongs
                         .Where(h => h.UserId == nguoiThue.UserId && h.DaTra == false)
                         .Select(h => h.Phong)
@@ -124,7 +113,6 @@ namespace QuanLiPhongTro.Controllers
             }
         }
 
-        // Danh sách sự cố đã báo cáo
         public async Task<IActionResult> DanhSachSuCo()
         {
             try
@@ -132,14 +120,17 @@ namespace QuanLiPhongTro.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 if (user == null) return NotFound();
 
-                var nguoiThue = await _context.NguoiThues
-                    .FirstOrDefaultAsync(n => n.UserId == user.Id);
-
+                var nguoiThue = await _context.NguoiThues.FirstOrDefaultAsync(n => n.UserId == user.Id);
                 if (nguoiThue == null) return NotFound();
+
+                var hopDongIds = await _context.HopDongs
+                    .Where(h => h.UserId == nguoiThue.UserId)
+                    .Select(h => h.PhongId)
+                    .ToListAsync();
 
                 var suCos = await _context.SuCos
                     .Include(s => s.Phong)
-                    .Where(s => s.Phong.HopDongs.Any(h => h.UserId == nguoiThue.UserId))
+                    .Where(s => hopDongIds.Contains(s.PhongId))
                     .OrderByDescending(s => s.NgayBaoCao)
                     .ToListAsync();
 
@@ -151,7 +142,6 @@ namespace QuanLiPhongTro.Controllers
             }
         }
 
-        // Xem chi tiết thanh toán
         public async Task<IActionResult> ChiTietThanhToan(int id)
         {
             try
@@ -171,8 +161,112 @@ namespace QuanLiPhongTro.Controllers
                 return View("Error", "Đã xảy ra lỗi khi tải chi tiết thanh toán");
             }
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> XacNhanThanhToan(int id)
+        {
+            var thanhToan = await _context.ThanhToans.FindAsync(id);
+            if (thanhToan == null)
+            {
+                return NotFound();
+            }
 
-        // Trang chủ người thuê
+            // Kiểm tra nếu đã thanh toán thì không xử lý lại
+            if (thanhToan.trangThaiThanhToan != TrangThaiThanhToan.ChuaThanhToan)
+            {
+                TempData["Warning"] = "Hóa đơn này không thể xác nhận vì đã thanh toán hoặc đang xử lý.";
+                return RedirectToAction("ChiTiet", new { id });
+            }
+
+            // Chuyển sang trạng thái Đang chờ xử lý
+            thanhToan.trangThaiThanhToan = TrangThaiThanhToan.DangChoXuLy;
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Yêu cầu xác nhận thanh toán đã được gửi đến chủ trọ.";
+            return RedirectToAction("ChiTiet", new { id });
+        }
+
+        public async Task<IActionResult> DichVuDaDangKy()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var hopDong = await _context.HopDongs
+                .FirstOrDefaultAsync(h => h.UserId == user.Id && !h.DaTra);
+
+            if (hopDong == null)
+            {
+                TempData["Error"] = "Bạn chưa có hợp đồng thuê phòng đang hoạt động.";
+                return RedirectToAction("Index");
+            }
+
+            var danhSach = await _context.SuDungDichVus
+                .Where(s => s.PhongId == hopDong.PhongId)
+                .Include(s => s.DichVu)
+                .ToListAsync();
+
+            return View(danhSach);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DangKySuDungDichVu()
+        {
+            ViewBag.DichVus = new SelectList(await _context.DichVus.ToListAsync(), "Id", "TenDichVu");
+
+            var user = await _userManager.GetUserAsync(User);
+            var hopDong = await _context.HopDongs
+                .FirstOrDefaultAsync(h => h.UserId == user.Id && !h.DaTra);
+
+            if (hopDong == null)
+            {
+                TempData["Error"] = "Bạn chưa có hợp đồng thuê phòng.";
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.PhongId = hopDong.PhongId;
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DangKySuDungDichVu(SuDungDichVu model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.DichVus = new SelectList(await _context.DichVus.ToListAsync(), "Id", "TenDichVu");
+                ViewBag.PhongId = model.PhongId;
+                return View(model);
+            }
+
+            _context.SuDungDichVus.Add(model);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Đăng ký dịch vụ thành công.";
+            return RedirectToAction("DichVuDaDangKy");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> HuyDangKyDichVu(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var hopDong = await _context.HopDongs
+                .FirstOrDefaultAsync(h => h.UserId == user.Id && !h.DaTra);
+
+            var suDung = await _context.SuDungDichVus
+                .FirstOrDefaultAsync(s => s.Id == id && s.PhongId == hopDong.PhongId);
+
+            if (suDung == null)
+            {
+                TempData["Error"] = "Không tìm thấy dịch vụ cần hủy.";
+                return RedirectToAction("DichVuDaDangKy");
+            }
+
+            _context.SuDungDichVus.Remove(suDung);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Hủy đăng ký dịch vụ thành công.";
+            return RedirectToAction("DichVuDaDangKy");
+        }
+
+
         public async Task<IActionResult> Index()
         {
             try
@@ -187,6 +281,8 @@ namespace QuanLiPhongTro.Controllers
 
                 if (nguoiThue == null) return NotFound();
 
+                var phongIds = nguoiThue.HopDongs.Where(h => !h.DaTra).Select(h => h.PhongId).ToList();
+
                 var model = new DashboardNguoiThueViewModel
                 {
                     HopDongHienTai = nguoiThue.HopDongs
@@ -194,7 +290,7 @@ namespace QuanLiPhongTro.Controllers
                         .OrderByDescending(h => h.NgayBatDau)
                         .FirstOrDefault(),
                     SuCos = await _context.SuCos
-                        .Where(s => s.Phong.HopDongs.Any(h => h.UserId == nguoiThue.UserId))
+                        .Where(s => phongIds.Contains(s.PhongId))
                         .OrderByDescending(s => s.NgayBaoCao)
                         .Take(5)
                         .ToListAsync(),

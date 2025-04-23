@@ -31,30 +31,7 @@ namespace QuanLiPhongTro.Controllers
             return View(list);
         }
 
-        //// ========================= THÊM ============================
-        //[HttpGet]
-        //public async Task<IActionResult> Them()
-        //{
-        //    var vm = new HopDongViewModel
-        //    {
-        //        DanhSachNguoiThue = await _context.NguoiThues
-        //            .Select(n => new SelectListItem
-        //            {
-        //                Value = n.UserId,
-        //                Text = n.User.UserName
-        //            }).ToListAsync(),
-        //        DanhSachPhong = await _context.Phongs
-        //            .Select(p => new SelectListItem
-        //            {
-        //                Value = p.Id.ToString(),
-        //                Text = p.TenPhong
-        //            }).ToListAsync(),
-        //        NgayBatDau = DateTime.Now
-        //    };
-
-        //    return View(vm);
-        //}
-        // Thêm method mới để lấy danh sách người dùng chưa có hợp đồng
+        
         private async Task<List<SelectListItem>> GetAvailableUsers()
         {
             // Lấy tất cả người dùng
@@ -87,7 +64,7 @@ namespace QuanLiPhongTro.Controllers
             {
                 DanhSachNguoiThue = await GetAvailableUsers(),
                 DanhSachPhong = await _context.Phongs
-                    .Where(p => p.DaThue== false) // Chỉ hiển thị phòng trống
+                    .Where(p => p.DaChoThue== false) // Chỉ hiển thị phòng trống
                     .Select(p => new SelectListItem
                     {
                         Value = p.Id.ToString(),
@@ -105,10 +82,27 @@ namespace QuanLiPhongTro.Controllers
         {
             if (!ModelState.IsValid)
             {
+                vm.DanhSachNguoiThue = await GetAvailableUsers();
+                vm.DanhSachPhong = await _context.Phongs
+                    .Where(p => p.DaChoThue == false)
+                    .Select(p => new SelectListItem
+                    {
+                        Value = p.Id.ToString(),
+                        Text = $"{p.TenPhong} - {p.GiaTien.ToString("N0")} đ"
+                    }).ToListAsync();
+                return View(vm);
+            }
+
+            // Kiểm tra phòng có sẵn không
+            var phong = await _context.Phongs.FindAsync(vm.PhongId);
+            if (phong == null || phong.DaChoThue)
+            {
+                ModelState.AddModelError("PhongId", "Phòng này đã được cho thuê");
                 await LoadDropdownData(vm);
                 return View(vm);
             }
 
+            // Tạo hợp đồng
             var hopDong = new HopDong
             {
                 UserId = vm.UserId,
@@ -118,6 +112,10 @@ namespace QuanLiPhongTro.Controllers
                 TienCoc = vm.TienCoc,
                 DaTra = false
             };
+
+            // Cập nhật trạng thái phòng
+            phong.DaChoThue = true;
+            _context.Phongs.Update(phong);
 
             _context.HopDongs.Add(hopDong);
             await _context.SaveChangesAsync();
@@ -160,6 +158,29 @@ namespace QuanLiPhongTro.Controllers
             var hopDong = await _context.HopDongs.FindAsync(id);
             if (hopDong == null) return NotFound();
 
+            // Kiểm tra nếu thay đổi phòng
+            if (hopDong.PhongId != vm.PhongId)
+            {
+                // Cập nhật trạng thái phòng cũ
+                var phongCu = await _context.Phongs.FindAsync(hopDong.PhongId);
+                if (phongCu != null)
+                {
+                    phongCu.DaChoThue = false;
+                    _context.Phongs.Update(phongCu);
+                }
+
+                // Cập nhật trạng thái phòng mới
+                var phongMoi = await _context.Phongs.FindAsync(vm.PhongId);
+                if (phongMoi == null || phongMoi.DaChoThue)
+                {
+                    ModelState.AddModelError("PhongId", "Phòng này đã được cho thuê");
+                    await LoadDropdownData(vm);
+                    return View(vm);
+                }
+                phongMoi.DaChoThue = true;
+                _context.Phongs.Update(phongMoi);
+            }
+
             hopDong.UserId = vm.UserId;
             hopDong.PhongId = vm.PhongId;
             hopDong.NgayBatDau = vm.NgayBatDau;
@@ -181,9 +202,19 @@ namespace QuanLiPhongTro.Controllers
             if (hopDong == null) return NotFound();
 
             var userId = hopDong.UserId;
+            var phongId = hopDong.PhongId;
 
             // Xóa hợp đồng
             _context.HopDongs.Remove(hopDong);
+
+            // Cập nhật trạng thái phòng
+            var phong = await _context.Phongs.FindAsync(phongId);
+            if (phong != null)
+            {
+                phong.DaChoThue = false;
+                _context.Phongs.Update(phong);
+            }
+
             await _context.SaveChangesAsync();
 
             // Kiểm tra người dùng có còn hợp đồng nào khác không
@@ -193,34 +224,26 @@ namespace QuanLiPhongTro.Controllers
                 var nguoiThue = await _context.NguoiThues.FirstOrDefaultAsync(n => n.UserId == userId);
                 if (nguoiThue != null)
                 {
-                    var user = await _context.Users.FindAsync(userId);
                     _context.NguoiThues.Remove(nguoiThue);
-                    if (user != null)
-                        _context.Users.Remove(user);
-
                     await _context.SaveChangesAsync();
                 }
             }
 
-            TempData["Success"] = "Đã xóa hợp đồng và người thuê (nếu không còn hợp đồng khác).";
+            TempData["Success"] = "Đã xóa hợp đồng và cập nhật trạng thái phòng.";
             return RedirectToAction("DanhSach");
         }
 
         // ========================= DROPDOWN DATA ============================
         private async Task LoadDropdownData(HopDongViewModel vm)
         {
-            vm.DanhSachNguoiThue = await _context.NguoiThues
-                .Select(n => new SelectListItem
-                {
-                    Value = n.UserId,
-                    Text = n.User.UserName
-                }).ToListAsync();
-
+            vm.DanhSachNguoiThue = await GetAvailableUsers();
             vm.DanhSachPhong = await _context.Phongs
+                .Where(p => p.DaChoThue == false || p.Id == vm.PhongId) // Hiển thị cả phòng đang chọn (khi sửa)
                 .Select(p => new SelectListItem
                 {
                     Value = p.Id.ToString(),
-                    Text = p.TenPhong
+                    Text = $"{p.TenPhong} - {p.GiaTien.ToString("N0")} đ",
+                    Selected = p.Id == vm.PhongId
                 }).ToListAsync();
         }
     }

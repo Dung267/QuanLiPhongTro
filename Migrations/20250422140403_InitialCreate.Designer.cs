@@ -9,11 +9,11 @@ using QuanLiPhongTro.Data;
 
 #nullable disable
 
-namespace QuanLiPhongTro.Data.Migrations
+namespace QuanLiPhongTro.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250422074209_UpdateAllModels")]
-    partial class UpdateAllModels
+    [Migration("20250422140403_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -233,11 +233,13 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     b.Property<string>("Loai")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("MoTa")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<decimal>("SoTien")
                         .HasColumnType("decimal(18,2)");
@@ -249,7 +251,7 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     b.HasIndex("ThanhToanId");
 
-                    b.ToTable("ChiTietThanhtoan");
+                    b.ToTable("ChiTietThanhToan");
                 });
 
             modelBuilder.Entity("QuanLiPhongTro.Models.DichVu", b =>
@@ -265,7 +267,8 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     b.Property<string>("TenDichVu")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -281,8 +284,8 @@ namespace QuanLiPhongTro.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("GhiChu")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("HopDongId")
                         .HasColumnType("int");
@@ -292,7 +295,8 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     b.Property<string>("NguoiLap")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("ThanhToanId")
                         .HasColumnType("int");
@@ -354,11 +358,13 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     b.Property<string>("CCCD")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
 
                     b.Property<string>("SDT")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.HasKey("UserId");
 
@@ -373,7 +379,7 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("DaThue")
+                    b.Property<bool>("DaChoThue")
                         .HasColumnType("bit");
 
                     b.Property<decimal>("GiaTien")
@@ -386,8 +392,9 @@ namespace QuanLiPhongTro.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ToaNhaId")
-                        .HasColumnType("int");
+                    b.Property<string>("ToaNhaId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -409,7 +416,8 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     b.Property<string>("MoTa")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("NgayBaoCao")
                         .HasColumnType("datetime2");
@@ -470,15 +478,12 @@ namespace QuanLiPhongTro.Data.Migrations
                     b.Property<DateTime>("NgayThanhToan")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("NguoiThueId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<decimal>("TongTien")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("trangThaiThanhToan")
                         .HasColumnType("int");
@@ -487,18 +492,15 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     b.HasIndex("HopDongId");
 
-                    b.HasIndex("NguoiThueId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("ThanhToans");
                 });
 
             modelBuilder.Entity("QuanLiPhongTro.Models.ToaNha", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("TenToa")
                         .IsRequired()
@@ -522,7 +524,8 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     b.Property<string>("LyDo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("NgayTra")
                         .HasColumnType("datetime2");
@@ -659,7 +662,7 @@ namespace QuanLiPhongTro.Data.Migrations
             modelBuilder.Entity("QuanLiPhongTro.Models.SuCo", b =>
                 {
                     b.HasOne("QuanLiPhongTro.Models.Phong", "Phong")
-                        .WithMany("SuCos")
+                        .WithMany()
                         .HasForeignKey("PhongId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -692,13 +695,15 @@ namespace QuanLiPhongTro.Data.Migrations
                         .WithMany()
                         .HasForeignKey("HopDongId");
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "NguoiThue")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
-                        .HasForeignKey("NguoiThueId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("HopDong");
 
-                    b.Navigation("NguoiThue");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("QuanLiPhongTro.Models.TraHopDong", b =>
@@ -732,8 +737,6 @@ namespace QuanLiPhongTro.Data.Migrations
             modelBuilder.Entity("QuanLiPhongTro.Models.Phong", b =>
                 {
                     b.Navigation("HopDongs");
-
-                    b.Navigation("SuCos");
                 });
 
             modelBuilder.Entity("QuanLiPhongTro.Models.ThanhToan", b =>

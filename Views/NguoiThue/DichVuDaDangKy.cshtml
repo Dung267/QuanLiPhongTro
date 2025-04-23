@@ -1,0 +1,39 @@
+﻿@model IEnumerable<QuanLiPhongTro.Models.SuDungDichVu>
+
+@{
+    ViewData["Title"] = "Dịch Vụ Đã Đăng Ký";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Tên Dịch Vụ</th>
+            <th>Đơn Giá</th>
+            <th>Chỉ Số Cũ</th>
+            <th>Chỉ Số Mới</th>
+            <th>Tháng/Năm</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.DichVu.TenDichVu</td>
+                <td>@item.DichVu.DonGia.ToString("N0")</td>
+                <td>@item.ChiSoCu</td>
+                <td>@item.ChiSoMoi</td>
+                <td>@item.ThangNam.ToString("MM/yyyy")</td>
+                <td>
+                    <form asp-action="HuyDangKyDichVu" method="post" onsubmit="return confirm('Bạn có chắc muốn hủy dịch vụ này?');">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm">Hủy</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

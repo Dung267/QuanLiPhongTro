@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuanLiPhongTro.Data;
 
 #nullable disable
 
-namespace QuanLiPhongTro.Data.Migrations
+namespace QuanLiPhongTro.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250421062745_InitialCreate")]
-    partial class InitialCreate
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,11 +86,6 @@ namespace QuanLiPhongTro.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -145,10 +137,6 @@ namespace QuanLiPhongTro.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator().HasValue("IdentityUser");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -242,11 +230,13 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     b.Property<string>("Loai")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("MoTa")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<decimal>("SoTien")
                         .HasColumnType("decimal(18,2)");
@@ -258,7 +248,7 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     b.HasIndex("ThanhToanId");
 
-                    b.ToTable("ChiTietThanhtoan");
+                    b.ToTable("ChiTietThanhToan");
                 });
 
             modelBuilder.Entity("QuanLiPhongTro.Models.DichVu", b =>
@@ -274,7 +264,8 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     b.Property<string>("TenDichVu")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -290,8 +281,8 @@ namespace QuanLiPhongTro.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("GhiChu")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("HopDongId")
                         .HasColumnType("int");
@@ -301,7 +292,8 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     b.Property<string>("NguoiLap")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("ThanhToanId")
                         .HasColumnType("int");
@@ -332,8 +324,8 @@ namespace QuanLiPhongTro.Data.Migrations
                     b.Property<DateTime>("NgayKetThuc")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("NguoiThueId")
-                        .HasColumnType("int");
+                    b.Property<string>("NguoiThueUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("PhongId")
                         .HasColumnType("int");
@@ -347,7 +339,7 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NguoiThueId");
+                    b.HasIndex("NguoiThueUserId");
 
                     b.HasIndex("PhongId");
 
@@ -358,27 +350,20 @@ namespace QuanLiPhongTro.Data.Migrations
 
             modelBuilder.Entity("QuanLiPhongTro.Models.NguoiThue", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CCCD")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
 
                     b.Property<string>("SDT")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
+                    b.HasKey("UserId");
 
                     b.ToTable("NguoiThue");
                 });
@@ -391,7 +376,7 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("DaThue")
+                    b.Property<bool>("DaChoThue")
                         .HasColumnType("bit");
 
                     b.Property<decimal>("GiaTien")
@@ -404,8 +389,9 @@ namespace QuanLiPhongTro.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ToaNhaId")
-                        .HasColumnType("int");
+                    b.Property<string>("ToaNhaId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -427,7 +413,8 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     b.Property<string>("MoTa")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("NgayBaoCao")
                         .HasColumnType("datetime2");
@@ -488,12 +475,12 @@ namespace QuanLiPhongTro.Data.Migrations
                     b.Property<DateTime>("NgayThanhToan")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("NguoiThueId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<decimal>("TongTien")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("trangThaiThanhToan")
                         .HasColumnType("int");
@@ -502,18 +489,15 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     b.HasIndex("HopDongId");
 
-                    b.HasIndex("NguoiThueId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("ThanhToans");
                 });
 
             modelBuilder.Entity("QuanLiPhongTro.Models.ToaNha", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("TenToa")
                         .IsRequired()
@@ -537,7 +521,8 @@ namespace QuanLiPhongTro.Data.Migrations
 
                     b.Property<string>("LyDo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("NgayTra")
                         .HasColumnType("datetime2");
@@ -547,22 +532,6 @@ namespace QuanLiPhongTro.Data.Migrations
                     b.HasIndex("HopDongId");
 
                     b.ToTable("TraHopDong");
-                });
-
-            modelBuilder.Entity("QuanLiPhongTro.Models.ApplicationUser", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("DiaChi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HoTen")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SoDienThoai")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -646,7 +615,7 @@ namespace QuanLiPhongTro.Data.Migrations
                 {
                     b.HasOne("QuanLiPhongTro.Models.NguoiThue", null)
                         .WithMany("HopDongs")
-                        .HasForeignKey("NguoiThueId");
+                        .HasForeignKey("NguoiThueUserId");
 
                     b.HasOne("QuanLiPhongTro.Models.Phong", "Phong")
                         .WithMany("HopDongs")
@@ -654,7 +623,7 @@ namespace QuanLiPhongTro.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QuanLiPhongTro.Models.ApplicationUser", "User")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -667,7 +636,7 @@ namespace QuanLiPhongTro.Data.Migrations
 
             modelBuilder.Entity("QuanLiPhongTro.Models.NguoiThue", b =>
                 {
-                    b.HasOne("QuanLiPhongTro.Models.ApplicationUser", "User")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -690,7 +659,7 @@ namespace QuanLiPhongTro.Data.Migrations
             modelBuilder.Entity("QuanLiPhongTro.Models.SuCo", b =>
                 {
                     b.HasOne("QuanLiPhongTro.Models.Phong", "Phong")
-                        .WithMany("SuCos")
+                        .WithMany()
                         .HasForeignKey("PhongId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -723,15 +692,15 @@ namespace QuanLiPhongTro.Data.Migrations
                         .WithMany()
                         .HasForeignKey("HopDongId");
 
-                    b.HasOne("QuanLiPhongTro.Models.ApplicationUser", "NguoiThue")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
-                        .HasForeignKey("NguoiThueId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("HopDong");
 
-                    b.Navigation("NguoiThue");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("QuanLiPhongTro.Models.TraHopDong", b =>
@@ -765,8 +734,6 @@ namespace QuanLiPhongTro.Data.Migrations
             modelBuilder.Entity("QuanLiPhongTro.Models.Phong", b =>
                 {
                     b.Navigation("HopDongs");
-
-                    b.Navigation("SuCos");
                 });
 
             modelBuilder.Entity("QuanLiPhongTro.Models.ThanhToan", b =>

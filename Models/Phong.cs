@@ -24,7 +24,7 @@ namespace QuanLiPhongTro.Models
         public decimal GiaTien { get; set; }
 
         [Display(Name = "Đã Cho Thuê")]
-        public bool DaChoThue { get; set; }
+        public bool DaChoThue { get; set; } = false;
 
         [Required]
         public string ToaNhaId { get; set; }
