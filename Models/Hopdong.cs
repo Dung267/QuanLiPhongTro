@@ -18,8 +18,8 @@ namespace QuanLiPhongTro.Models
         public IdentityUser User { get; set; }
 
         [Required]
-        [ForeignKey("PhongId")]
         public String PhongId { get; set; }
+        [ForeignKey("PhongId")] 
         public Phong Phong { get; set; }
 
         public ICollection<TraHopDong> TraHopDongs { get; set; }

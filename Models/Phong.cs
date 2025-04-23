@@ -37,6 +37,8 @@ namespace QuanLiPhongTro.Models
         [ForeignKey("ToaNhaId")]
         public virtual ToaNha? ToaNha { get; set; }
 
+        public bool DaThue { get; set; }
+
         public ICollection<HopDong> HopDongs { get; set; } = new List<HopDong>();
     }
 }
