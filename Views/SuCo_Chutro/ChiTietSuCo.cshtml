@@ -1,0 +1,22 @@
+﻿@model QuanLiPhongTro.Models.SuCo
+
+@{
+    ViewData["Title"] = "Chi Tiết Sự Cố";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h3>Phòng: @Model.Phong.TenPhong</h3>  <!-- Tên phòng -->
+    <p><strong>Mô Tả:</strong> @Model.MoTa</p>  <!-- Mô tả sự cố -->
+    <p><strong>Ngày Báo Cáo:</strong> @Model.NgayBaoCao.ToString("dd/MM/yyyy")</p>  <!-- Ngày báo cáo -->
+    <p><strong>Trạng Thái:</strong> @(Model.DaGiaiQuyet ? "Đã Giải Quyết" : "Chưa Giải Quyết")</p>  <!-- Trạng thái giải quyết -->
+</div>
+
+<form method="post">
+    <div class="form-group">
+        <label for="DaGiaiQuyet">Đã Giải Quyết:</label>
+        <input type="checkbox" id="DaGiaiQuyet" name="DaGiaiQuyet" @(Model.DaGiaiQuyet ? "checked" : "") />
+    </div>
+    <button type="submit" class="btn btn-success">Cập Nhật</button>
+</form>

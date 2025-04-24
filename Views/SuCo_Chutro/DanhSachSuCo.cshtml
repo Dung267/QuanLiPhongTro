@@ -1,0 +1,33 @@
+﻿@model IEnumerable<QuanLiPhongTro.Models.SuCo>
+
+@{
+    ViewData["Title"] = "Danh Sách Sự Cố";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Phòng</th>
+            <th>Ngày Báo Cáo</th>
+            <th>Mô Tả</th>
+            <th>Trạng Thái</th>
+            <th>Thao Tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var suCo in Model)
+        {
+            <tr>
+                <td>@suCo.Phong.TenPhong</td> <!-- Tên phòng -->
+                <td>@suCo.NgayBaoCao.ToString("dd/MM/yyyy")</td>
+                <td>@suCo.MoTa</td>
+                <td>@(suCo.DaGiaiQuyet ? "Đã Giải Quyết" : "Chưa Giải Quyết")</td>
+                <td>
+                    <a href="@Url.Action("ChiTietSuCo", "SuCo_ChuTro", new { id = suCo.Id })" class="btn btn-primary">Chi Tiết</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
