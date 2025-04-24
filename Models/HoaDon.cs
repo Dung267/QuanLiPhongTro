@@ -9,13 +9,24 @@ namespace QuanLiPhongTro.Models
         [Key]
         public int Id { get; set; }
 
+        [Required]
         public int ThanhToanId { get; set; }
+
+        [ForeignKey("ThanhToanId")]
         public ThanhToan ThanhToan { get; set; }
 
-        public DateTime NgayLap { get; set; } // Ngày lập hóa đơn
+        [Required]
+        [Display(Name = "Ngày Lập")]
+        [DataType(DataType.Date)]
+        public DateTime NgayLap { get; set; }
 
-        public string NguoiLap { get; set; } // Nguoi lập hóa đơn
+        [Required(ErrorMessage = "Người lập hóa đơn là bắt buộc")]
+        [StringLength(100, ErrorMessage = "Tên người lập không vượt quá 100 ký tự")]
+        [Display(Name = "Người Lập")]
+        public string NguoiLap { get; set; }
 
-        public string GhiChu { get; set; }
+        [StringLength(255)]
+        [Display(Name = "Ghi Chú")]
+        public string? GhiChu { get; set; }
     }
 }

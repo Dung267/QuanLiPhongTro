@@ -25,48 +25,20 @@ namespace QuanLiPhongTro.Controllers
         {
             var list = await _context.HopDongs
                 .Include(h => h.Phong)
-                .Include(h => h.User) // chỉ cần include IdentityUser nếu cần tên đăng nhập
+                .Include(h => h.User)
                 .ToListAsync();
 
             return View(list);
         }
 
-        //// ========================= THÊM ============================
-        //[HttpGet]
-        //public async Task<IActionResult> Them()
-        //{
-        //    var vm = new HopDongViewModel
-        //    {
-        //        DanhSachNguoiThue = await _context.NguoiThues
-        //            .Select(n => new SelectListItem
-        //            {
-        //                Value = n.UserId,
-        //                Text = n.User.UserName
-        //            }).ToListAsync(),
-        //        DanhSachPhong = await _context.Phongs
-        //            .Select(p => new SelectListItem
-        //            {
-        //                Value = p.Id.ToString(),
-        //                Text = p.TenPhong
-        //            }).ToListAsync(),
-        //        NgayBatDau = DateTime.Now
-        //    };
-
-        //    return View(vm);
-        //}
-        // Thêm method mới để lấy danh sách người dùng chưa có hợp đồng
         private async Task<List<SelectListItem>> GetAvailableUsers()
         {
-            // Lấy tất cả người dùng
             var allUsers = await _userManager.Users.ToListAsync();
-
-            // Lấy danh sách UserId đã có hợp đồng
             var usersWithContracts = await _context.HopDongs
                 .Select(h => h.UserId)
                 .Distinct()
                 .ToListAsync();
 
-            // Lọc ra những người dùng chưa có hợp đồng
             var availableUsers = allUsers
                 .Where(u => !usersWithContracts.Contains(u.Id))
                 .Select(u => new SelectListItem
@@ -79,7 +51,7 @@ namespace QuanLiPhongTro.Controllers
             return availableUsers;
         }
 
-        // Sửa lại action Them (GET)
+        // ========================= THÊM ============================
         [HttpGet]
         public async Task<IActionResult> Them()
         {
@@ -87,11 +59,11 @@ namespace QuanLiPhongTro.Controllers
             {
                 DanhSachNguoiThue = await GetAvailableUsers(),
                 DanhSachPhong = await _context.Phongs
-                    .Where(p => p.DaThue== false) // Chỉ hiển thị phòng trống
+                    .Where(p => !p.DaChoThue)
                     .Select(p => new SelectListItem
                     {
-                        Value = p.Id.ToString(),
-                        Text = $"{p.TenPhong} - {p.GiaTien.ToString("N0")} đ"
+                        Value = p.Id,
+                        Text = $"{p.TenPhong} - {p.GiaTien:N0} đ"
                     }).ToListAsync(),
                 NgayBatDau = DateTime.Now
             };
@@ -99,31 +71,151 @@ namespace QuanLiPhongTro.Controllers
             return View(vm);
         }
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Them(HopDongViewModel vm)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        await LoadDropdownData(vm);
+        //        return View(vm);
+        //    }
+
+        //    var phong = await _context.Phongs.FindAsync(vm.PhongId);
+        //    if (phong == null || phong.DaChoThue)
+        //    {
+        //        ModelState.AddModelError("PhongId", "Phòng này đã được cho thuê");
+        //        await LoadDropdownData(vm);
+        //        return View(vm);
+        //    }
+
+        //    // Tạo hợp đồng
+        //    var hopDong = new HopDong
+        //    {
+        //        UserId = vm.UserId,
+        //        PhongId = vm.PhongId,
+        //        NgayBatDau = vm.NgayBatDau,
+        //        NgayKetThuc = vm.NgayBatDau.AddMonths(6),
+        //        TienCoc = vm.TienCoc,
+        //        DaTra = false
+        //    };
+
+        //    // Cập nhật phòng
+        //    phong.DaChoThue = true;
+        //    _context.Phongs.Update(phong);
+
+        //    // Thêm người thuê nếu chưa có
+        //    var existingNguoiThue = await _context.NguoiThues.FindAsync(vm.UserId);
+        //    if (existingNguoiThue == null)
+        //    {
+        //        var nguoiThue = new NguoiThue
+        //        {
+        //            UserId = vm.UserId,
+        //            CCCD = vm.CCCD,
+        //            SDT = vm.SDT
+        //        };
+        //        _context.NguoiThues.Add(nguoiThue);
+        //    }
+
+        //    _context.HopDongs.Add(hopDong);
+        //    await _context.SaveChangesAsync();
+
+        //    TempData["Success"] = "Thêm hợp đồng thành công.";
+        //    return RedirectToAction("DanhSach");
+        //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Them(HopDongViewModel vm)
         {
-            if (!ModelState.IsValid)
+            try
             {
+                if (!ModelState.IsValid)
+                {
+                    await LoadDropdownData(vm);
+                    return View(vm);
+                }
+
+                // Kiểm tra phòng tồn tại và trống
+                var phong = await _context.Phongs.FindAsync(vm.PhongId);
+                if (phong == null)
+                {
+                    ModelState.AddModelError("PhongId", "Phòng không tồn tại");
+                    await LoadDropdownData(vm);
+                    return View(vm);
+                }
+
+                if (phong.DaChoThue)
+                {
+                    ModelState.AddModelError("PhongId", "Phòng này đã được cho thuê");
+                    await LoadDropdownData(vm);
+                    return View(vm);
+                }
+
+                // Kiểm tra người dùng tồn tại
+                var user = await _userManager.FindByIdAsync(vm.UserId);
+                if (user == null)
+                {
+                    ModelState.AddModelError("UserId", "Người dùng không tồn tại");
+                    await LoadDropdownData(vm);
+                    return View(vm);
+                }
+
+                // Tạo hợp đồng
+                var hopDong = new HopDong
+                {
+                    UserId = vm.UserId,
+                    PhongId = vm.PhongId,
+                    NgayBatDau = vm.NgayBatDau,
+                    NgayKetThuc = vm.NgayBatDau.AddMonths(6),
+                    TienCoc = vm.TienCoc,
+                    DaTra = false
+                };
+
+                // Sử dụng transaction để đảm bảo toàn vẹn dữ liệu
+                using (var transaction = await _context.Database.BeginTransactionAsync())
+                {
+                    try
+                    {
+                        // Cập nhật phòng
+                        phong.DaChoThue = true;
+                        _context.Phongs.Update(phong);
+
+                        // Thêm người thuê nếu chưa có
+                        var existingNguoiThue = await _context.NguoiThues.FindAsync(vm.UserId);
+                        if (existingNguoiThue == null)
+                        {
+                            var nguoiThue = new NguoiThue
+                            {
+                                UserId = vm.UserId,
+                                CCCD = vm.CCCD,
+                                SDT = vm.SDT
+                            };
+                            _context.NguoiThues.Add(nguoiThue);
+                        }
+
+                        _context.HopDongs.Add(hopDong);
+                        await _context.SaveChangesAsync();
+                        await transaction.CommitAsync();
+
+                        TempData["Success"] = "Thêm hợp đồng thành công.";
+                        return RedirectToAction("DanhSach");
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        ModelState.AddModelError("", "Có lỗi xảy ra khi lưu hợp đồng: " + ex.Message);
+                        await LoadDropdownData(vm);
+                        return View(vm);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Lỗi hệ thống: " + ex.Message);
                 await LoadDropdownData(vm);
                 return View(vm);
             }
-
-            var hopDong = new HopDong
-            {
-                UserId = vm.UserId,
-                PhongId = vm.PhongId,
-                NgayBatDau = vm.NgayBatDau,
-                NgayKetThuc = vm.NgayKetThuc,
-                TienCoc = vm.TienCoc,
-                DaTra = false
-            };
-
-            _context.HopDongs.Add(hopDong);
-            await _context.SaveChangesAsync();
-
-            TempData["Success"] = "Thêm hợp đồng thành công.";
-            return RedirectToAction("DanhSach");
         }
 
         // ========================= SỬA ============================
@@ -139,7 +231,7 @@ namespace QuanLiPhongTro.Controllers
                 UserId = hopDong.UserId,
                 PhongId = hopDong.PhongId,
                 NgayBatDau = hopDong.NgayBatDau,
-                NgayKetThuc = hopDong.NgayKetThuc,
+                NgayKetThuc = hopDong.NgayBatDau.AddMonths(6),
                 TienCoc = hopDong.TienCoc
             };
 
@@ -160,10 +252,30 @@ namespace QuanLiPhongTro.Controllers
             var hopDong = await _context.HopDongs.FindAsync(id);
             if (hopDong == null) return NotFound();
 
+            if (hopDong.PhongId != vm.PhongId)
+            {
+                var phongCu = await _context.Phongs.FindAsync(hopDong.PhongId);
+                if (phongCu != null)
+                {
+                    phongCu.DaChoThue = false;
+                    _context.Phongs.Update(phongCu);
+                }
+
+                var phongMoi = await _context.Phongs.FindAsync(vm.PhongId);
+                if (phongMoi == null || phongMoi.DaChoThue)
+                {
+                    ModelState.AddModelError("PhongId", "Phòng này đã được cho thuê");
+                    await LoadDropdownData(vm);
+                    return View(vm);
+                }
+                phongMoi.DaChoThue = true;
+                _context.Phongs.Update(phongMoi);
+            }
+
             hopDong.UserId = vm.UserId;
             hopDong.PhongId = vm.PhongId;
             hopDong.NgayBatDau = vm.NgayBatDau;
-            hopDong.NgayKetThuc = vm.NgayKetThuc;
+            hopDong.NgayKetThuc = vm.NgayBatDau.AddMonths(6);
             hopDong.TienCoc = vm.TienCoc;
 
             await _context.SaveChangesAsync();
@@ -181,46 +293,45 @@ namespace QuanLiPhongTro.Controllers
             if (hopDong == null) return NotFound();
 
             var userId = hopDong.UserId;
+            var phongId = hopDong.PhongId;
 
-            // Xóa hợp đồng
             _context.HopDongs.Remove(hopDong);
+
+            var phong = await _context.Phongs.FindAsync(phongId);
+            if (phong != null)
+            {
+                phong.DaChoThue = false;
+                _context.Phongs.Update(phong);
+            }
+
             await _context.SaveChangesAsync();
 
-            // Kiểm tra người dùng có còn hợp đồng nào khác không
             var hasOtherContracts = await _context.HopDongs.AnyAsync(h => h.UserId == userId);
             if (!hasOtherContracts)
             {
                 var nguoiThue = await _context.NguoiThues.FirstOrDefaultAsync(n => n.UserId == userId);
                 if (nguoiThue != null)
                 {
-                    var user = await _context.Users.FindAsync(userId);
                     _context.NguoiThues.Remove(nguoiThue);
-                    if (user != null)
-                        _context.Users.Remove(user);
-
                     await _context.SaveChangesAsync();
                 }
             }
 
-            TempData["Success"] = "Đã xóa hợp đồng và người thuê (nếu không còn hợp đồng khác).";
+            TempData["Success"] = "Đã xóa hợp đồng và cập nhật trạng thái phòng.";
             return RedirectToAction("DanhSach");
         }
 
         // ========================= DROPDOWN DATA ============================
         private async Task LoadDropdownData(HopDongViewModel vm)
         {
-            vm.DanhSachNguoiThue = await _context.NguoiThues
-                .Select(n => new SelectListItem
-                {
-                    Value = n.UserId,
-                    Text = n.User.UserName
-                }).ToListAsync();
-
+            vm.DanhSachNguoiThue = await GetAvailableUsers();
             vm.DanhSachPhong = await _context.Phongs
+                .Where(p => !p.DaChoThue || p.Id == vm.PhongId)
                 .Select(p => new SelectListItem
                 {
-                    Value = p.Id.ToString(),
-                    Text = p.TenPhong
+                    Value = p.Id,
+                    Text = $"{p.TenPhong} - {p.GiaTien:N0} đ",
+                    Selected = p.Id == vm.PhongId
                 }).ToListAsync();
         }
     }

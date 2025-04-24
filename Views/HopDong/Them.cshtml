@@ -1,20 +1,40 @@
 ﻿@model QuanLiPhongTro.Models.HopDongViewModel
 
 @{
-    ViewData["Title"] = "Thêm Hợp Đồng";
+    ViewData["Title"] = "Thêm hợp đồng mới";
 }
 
 <div class="container">
-    <h2 class="my-4">@ViewData["Title"]</h2>
+    <h2 class="mb-4">@ViewData["Title"]</h2>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <h5>Có lỗi xảy ra:</h5>
+            <ul>
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+            @if (ViewContext.HttpContext.Request.Method == "POST")
+            {
+                <div class="mt-3">
+                    <h6>Giá trị nhập:</h6>
+                    <pre>@Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented)</pre>
+                </div>
+            }
+        </div>
+    }
 
     <div class="row">
         <div class="col-md-8">
-            <form asp-action="Them">
+            <form asp-action="Them" id="hopDongForm">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                <div class="form-group mb-3">
-                    <label asp-for="UserId" class="control-label">Người Thuê</label>
-                    @if (Model.DanhSachNguoiThue.Any())
+                <div class="form-group">
+                    <label asp-for="UserId" class="control-label">Người thuê</label>
+                    @if (Model.DanhSachNguoiThue?.Any() == true)
                     {
                         <select asp-for="UserId" asp-items="Model.DanhSachNguoiThue" class="form-control">
                             <option value="">-- Chọn người thuê --</option>
@@ -22,32 +42,134 @@
                     }
                     else
                     {
-                        <div class="alert alert-warning">
-                            Không có người dùng nào khả dụng. Vui lòng đăng ký tài khoản mới.
-                            <a asp-controller="Account" asp-action="Register" class="alert-link">Đăng ký ngay</a>
-                        </div>
+                        <div class="alert alert-warning">Không có người thuê nào khả dụng</div>
                     }
                     <span asp-validation-for="UserId" class="text-danger"></span>
                 </div>
 
-                <!-- Các trường khác giữ nguyên -->
-                <div class="form-group mb-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="CCCD" class="control-label">Số CCCD</label>
+                            <input asp-for="CCCD" class="form-control" placeholder="Nhập số căn cước" />
+                            <span asp-validation-for="CCCD" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="SDT" class="control-label">Số điện thoại</label>
+                            <input asp-for="SDT" class="form-control" placeholder="Nhập số điện thoại" />
+                            <span asp-validation-for="SDT" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label asp-for="PhongId" class="control-label">Phòng</label>
-                    <select asp-for="PhongId" asp-items="Model.DanhSachPhong" class="form-control">
-                        <option value="">-- Chọn phòng --</option>
-                    </select>
+                    @if (Model.DanhSachPhong?.Any() == true)
+                    {
+                        <select asp-for="PhongId" asp-items="Model.DanhSachPhong" class="form-control">
+                            <option value="">-- Chọn phòng --</option>
+                        </select>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">Không có phòng nào khả dụng</div>
+                    }
                     <span asp-validation-for="PhongId" class="text-danger"></span>
                 </div>
 
-                <!-- Các trường khác... -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="NgayBatDau" class="control-label">Ngày bắt đầu</label>
+                            <input asp-for="NgayBatDau" type="date" class="form-control"
+                                   min="@DateTime.Now.ToString("yyyy-MM-dd")"
+                                   value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                            <span asp-validation-for="NgayBatDau" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Ngày kết thúc (tự động)</label>
+                            <input type="text" class="form-control" id="ngayKetThuc"
+                                   value="@DateTime.Now.AddMonths(6).ToString("dd/MM/yyyy")" readonly />
+                        </div>
+                    </div>
+                </div>
 
-                <div class="form-group mt-4">
-                    <button type="submit" class="btn btn-primary" @(!Model.DanhSachNguoiThue.Any() ? "disabled" : "")>
-                        Thêm Hợp Đồng
+                <div class="form-group">
+                    <label asp-for="TienCoc" class="control-label">Tiền cọc (VND)</label>
+                    <input asp-for="TienCoc" class="form-control" placeholder="Nhập số tiền cọc" />
+                    <span asp-validation-for="TienCoc" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Lưu hợp đồng
                     </button>
-                    <a asp-action="DanhSach" class="btn btn-secondary">Quay lại</a>
+                    <a asp-action="DanhSach" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </a>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+            // Tính tự động ngày kết thúc khi thay đổi ngày bắt đầu
+            $('#NgayBatDau').change(function () {
+                var startDate = new Date($(this).val());
+                if (!isNaN(startDate.getTime())) {
+                    var endDate = new Date(startDate);
+                    endDate.setMonth(endDate.getMonth() + 6);
+                    $('#ngayKetThuc').val(formatDate(endDate));
+                }
+            });
+
+            // Kiểm tra trước khi submit
+            $('#hopDongForm').submit(function (e) {
+                if ($('#UserId').val() === '') {
+                    alert('Vui lòng chọn người thuê');
+                    e.preventDefault();
+                    return false;
+                }
+
+                if ($('#PhongId').val() === '') {
+                    alert('Vui lòng chọn phòng');
+                    e.preventDefault();
+                    return false;
+                }
+
+                // Kiểm tra ngày bắt đầu
+                var startDate = new Date($('#NgayBatDau').val());
+                if (startDate < new Date()) {
+                    alert('Ngày bắt đầu không được nhỏ hơn ngày hiện tại');
+                    e.preventDefault();
+                    return false;
+                }
+
+                return true;
+            });
+
+            // Định dạng số tiền cọc
+            $('#TienCoc').on('input', function () {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+
+            function formatDate(date) {
+                var day = date.getDate().toString().padStart(2, '0');
+                var month = (date.getMonth() + 1).toString().padStart(2, '0');
+                var year = date.getFullYear();
+                return day + '/' + month + '/' + year;
+            }
+        });
+    </script>
+}

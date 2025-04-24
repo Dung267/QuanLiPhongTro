@@ -56,7 +56,7 @@ namespace QuanLiPhongTro.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TenDichVu = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenDichVu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DonGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
@@ -187,8 +187,8 @@ namespace QuanLiPhongTro.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CCCD = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SDT = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CCCD = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
+                    SDT = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -266,7 +266,7 @@ namespace QuanLiPhongTro.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MoTa = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     NgayBaoCao = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DaGiaiQuyet = table.Column<bool>(type: "bit", nullable: false),
                     PhongId = table.Column<string>(type: "nvarchar(450)", nullable: false)
@@ -346,7 +346,7 @@ namespace QuanLiPhongTro.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NgayTra = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LyDo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LyDo = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     HopDongId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -361,21 +361,21 @@ namespace QuanLiPhongTro.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ChiTietThanhtoan",
+                name: "ChiTietThanhToan",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ThanhToanId = table.Column<int>(type: "int", nullable: false),
-                    Loai = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Loai = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    MoTa = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     SoTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChiTietThanhtoan", x => x.Id);
+                    table.PrimaryKey("PK_ChiTietThanhToan", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ChiTietThanhtoan_ThanhToans_ThanhToanId",
+                        name: "FK_ChiTietThanhToan_ThanhToans_ThanhToanId",
                         column: x => x.ThanhToanId,
                         principalTable: "ThanhToans",
                         principalColumn: "Id",
@@ -390,8 +390,8 @@ namespace QuanLiPhongTro.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ThanhToanId = table.Column<int>(type: "int", nullable: false),
                     NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NguoiLap = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NguoiLap = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    GhiChu = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     HopDongId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -450,8 +450,8 @@ namespace QuanLiPhongTro.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChiTietThanhtoan_ThanhToanId",
-                table: "ChiTietThanhtoan",
+                name: "IX_ChiTietThanhToan_ThanhToanId",
+                table: "ChiTietThanhToan",
                 column: "ThanhToanId");
 
             migrationBuilder.CreateIndex(
@@ -534,7 +534,7 @@ namespace QuanLiPhongTro.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ChiTietThanhtoan");
+                name: "ChiTietThanhToan");
 
             migrationBuilder.DropTable(
                 name: "HoaDon");

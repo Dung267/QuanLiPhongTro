@@ -28,7 +28,7 @@ namespace QuanLiPhongTro.Models
         public decimal GiaTien { get; set; }
 
         [Display(Name = "Đã Cho Thuê")]
-        public bool DaChoThue { get; set; }
+        public bool DaChoThue { get; set; }= false;
 
         [Required(ErrorMessage = "Vui lòng chọn tòa nhà")]
         [Display(Name = "Mã Tòa Nhà")]

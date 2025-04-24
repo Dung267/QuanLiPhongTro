@@ -3,19 +3,29 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QuanLiPhongTro.Models
 {
-    [Table("ChiTietThanhtoan")]
+    [Table("ChiTietThanhToan")]
     public class ChiTietThanhToan
     {
         [Key]
         public int Id { get; set; }
 
-        public int ThanhToanId { get; set; } // FK đến ThanhToan
+        [Required]
+        public int ThanhToanId { get; set; }
+
+        [ForeignKey("ThanhToanId")]
         public ThanhToan ThanhToan { get; set; }
 
+        [Required(ErrorMessage = "Loại khoản thanh toán là bắt buộc")]
+        [StringLength(20)]
         public string Loai { get; set; } // "TienPhong" hoặc "DichVu"
 
-        public string MoTa { get; set; } // Ví dụ: "Tiền phòng tháng 4", "Điện + nước + mạng"
+        [Required(ErrorMessage = "Mô tả là bắt buộc")]
+        [StringLength(255)]
+        public string MoTa { get; set; }
 
+        [Required]
+        [Range(0, 999999999, ErrorMessage = "Số tiền không hợp lệ")]
+        [DataType(DataType.Currency)]
         public decimal SoTien { get; set; }
     }
 }

@@ -12,7 +12,7 @@ using QuanLiPhongTro.Data;
 namespace QuanLiPhongTro.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250423063319_InitialCreate")]
+    [Migration("20250423163118_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -233,11 +233,13 @@ namespace QuanLiPhongTro.Migrations
 
                     b.Property<string>("Loai")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("MoTa")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<decimal>("SoTien")
                         .HasColumnType("decimal(18,2)");
@@ -249,7 +251,7 @@ namespace QuanLiPhongTro.Migrations
 
                     b.HasIndex("ThanhToanId");
 
-                    b.ToTable("ChiTietThanhtoan");
+                    b.ToTable("ChiTietThanhToan");
                 });
 
             modelBuilder.Entity("QuanLiPhongTro.Models.DichVu", b =>
@@ -265,7 +267,8 @@ namespace QuanLiPhongTro.Migrations
 
                     b.Property<string>("TenDichVu")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -281,8 +284,8 @@ namespace QuanLiPhongTro.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("GhiChu")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("HopDongId")
                         .HasColumnType("int");
@@ -292,7 +295,8 @@ namespace QuanLiPhongTro.Migrations
 
                     b.Property<string>("NguoiLap")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("ThanhToanId")
                         .HasColumnType("int");
@@ -355,11 +359,13 @@ namespace QuanLiPhongTro.Migrations
 
                     b.Property<string>("CCCD")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
 
                     b.Property<string>("SDT")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.HasKey("UserId");
 
@@ -411,7 +417,8 @@ namespace QuanLiPhongTro.Migrations
 
                     b.Property<string>("MoTa")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("NgayBaoCao")
                         .HasColumnType("datetime2");
@@ -520,7 +527,8 @@ namespace QuanLiPhongTro.Migrations
 
                     b.Property<string>("LyDo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("NgayTra")
                         .HasColumnType("datetime2");

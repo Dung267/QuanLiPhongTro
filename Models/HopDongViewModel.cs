@@ -4,29 +4,22 @@ namespace QuanLiPhongTro.Models
 {
     public class HopDongViewModel
     {
-            public int? Id { get; set; }
+        public int Id { get; set; }
+        public string UserId { get; set; }
 
-            [Required]
-            public string UserId { get; set; }
+        public String PhongId { get; set; } // <- Chuyển từ int sang string
 
-            [Required]
-            public String PhongId { get; set; }
+        public DateTime NgayBatDau { get; set; }
+        public DateTime NgayKetThuc { get; set; }
+        public decimal TienCoc { get; set; }
 
-            [Required]
-            [DataType(DataType.Date)]
-            public DateTime NgayBatDau { get; set; }
+        public string CCCD { get; set; }
+        public string SDT { get; set; }
 
-            [DataType(DataType.Date)]
-            public DateTime NgayKetThuc { get; set; }
+        public List<SelectListItem>? DanhSachNguoiThue { get; set; }
+        public List<SelectListItem>? DanhSachPhong { get; set; }
+    }
 
-            [Required]
-            public decimal TienCoc { get; set; }
-
-            public bool DaTra { get; set; }
-
-            public List<SelectListItem> DanhSachNguoiThue { get; set; }
-            public List<SelectListItem> DanhSachPhong { get; set; }
-        }
 
 }
 
