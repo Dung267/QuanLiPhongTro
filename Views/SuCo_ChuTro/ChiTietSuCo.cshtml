@@ -1,0 +1,19 @@
+﻿@model QuanLiPhongTro.Models.SuCo
+
+@{
+    ViewData["Title"] = "Chi Tiết Sự Cố";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="card p-3">
+    <h4><strong>Phòng:</strong> @Model.Phong?.TenPhong</h4>
+    <p><strong>Mô Tả:</strong> @Model.MoTa</p>
+    <p><strong>Ngày Báo Cáo:</strong> @Model.NgayBaoCao.ToString("dd/MM/yyyy")</p>
+    <p>
+        <strong>Trạng Thái:</strong>
+        <span class="badge @(Model.DaGiaiQuyet ? "bg-success" : "bg-warning text-dark")">
+            @(Model.DaGiaiQuyet ? "Đã Giải Quyết" : "Chưa Giải Quyết")
+        </span>
+    </p>
+</div>

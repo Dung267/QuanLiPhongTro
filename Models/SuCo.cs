@@ -28,5 +28,8 @@ namespace QuanLiPhongTro.Models
         [ForeignKey("PhongId")]
 
         public Phong ? Phong { get; set; }
+
     }
+
 }
+

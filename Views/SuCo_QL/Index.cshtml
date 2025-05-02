@@ -1,0 +1,42 @@
+﻿@model List<QuanLiPhongTro.Models.SuCoViewModel>
+
+@{
+    ViewData["Title"] = "Danh sách sự cố";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Mô tả</th>
+            <th>Ngày báo cáo</th>
+            <th>Trạng thái</th>
+            <th>Cập nhật</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.MoTa</td>
+                <td>@item.NgayBaoCao.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@(item.DaGiaiQuyet ? "Đã xử lý" : "Đang xử lý")</td>
+                <td>
+                    @if (!item.DaGiaiQuyet)
+                    {
+                        <form asp-controller="SuCo_QL" asp-action="CapNhatTrangThai" method="post">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <input type="hidden" name="daGiaiQuyet" value="true" />
+                            <button type="submit" class="btn btn-sm btn-success">Đánh dấu đã xử lý</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span class="text-muted">✓</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

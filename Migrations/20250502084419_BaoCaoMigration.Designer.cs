@@ -12,8 +12,8 @@ using QuanLiPhongTro.Data;
 namespace QuanLiPhongTro.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250425151737_UpdateAllModels")]
-    partial class UpdateAllModels
+    [Migration("20250502084419_BaoCaoMigration")]
+    partial class BaoCaoMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

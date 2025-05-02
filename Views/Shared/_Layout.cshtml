@@ -30,7 +30,34 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Phong" asp-action="Index">Quản lý Phòng</a>
                             </li>
-                        }                       
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="SuCo_ChuTro" asp-action="DanhSachSuCo">Quản lý sự cố</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="BaoCao" asp-action="BaoCaoTaiChinh">Báo Cáo Tài Chính</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="HopDong" asp-action="DanhSach">Hợp Đồng</a>
+                            </li>
+                        } 
+                        @if (User.IsInRole("User"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="HopDong" asp-action="DanhSach">Xem Hợp Đồng</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="NguoiThue" asp-action="HoaDonCuaToi">Xem Thanh Toán</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="NguoiThue" asp-action="BaoCaoSuCo">Báo cáo sự cố</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("QuanLi"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="SuCo_QL" asp-action="Index">Quản Lí Sự Cố</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace QuanLiPhongTro.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateAllModels : Migration
+    public partial class NewMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,24 +18,11 @@ namespace QuanLiPhongTro.Migrations
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
-            migrationBuilder.AlterColumn<string>(
-                name: "PhongId",
-                table: "SuCo",
-                type: "nvarchar(450)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
-
             migrationBuilder.AddColumn<int>(
                 name: "SuDungDichVuId",
                 table: "ChiTietThanhToan",
                 type: "int",
                 nullable: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SuCo_PhongId",
-                table: "SuCo",
-                column: "PhongId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChiTietThanhToan_SuDungDichVuId",
@@ -48,14 +35,6 @@ namespace QuanLiPhongTro.Migrations
                 column: "SuDungDichVuId",
                 principalTable: "SuDungDichVu",
                 principalColumn: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_SuCo_Phong_PhongId",
-                table: "SuCo",
-                column: "PhongId",
-                principalTable: "Phong",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
@@ -64,14 +43,6 @@ namespace QuanLiPhongTro.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_ChiTietThanhToan_SuDungDichVu_SuDungDichVuId",
                 table: "ChiTietThanhToan");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_SuCo_Phong_PhongId",
-                table: "SuCo");
-
-            migrationBuilder.DropIndex(
-                name: "IX_SuCo_PhongId",
-                table: "SuCo");
 
             migrationBuilder.DropIndex(
                 name: "IX_ChiTietThanhToan_SuDungDichVuId",
@@ -84,14 +55,6 @@ namespace QuanLiPhongTro.Migrations
             migrationBuilder.DropColumn(
                 name: "SuDungDichVuId",
                 table: "ChiTietThanhToan");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "PhongId",
-                table: "SuCo",
-                type: "nvarchar(max)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(450)");
         }
     }
 }
