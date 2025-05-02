@@ -1,0 +1,70 @@
+﻿@model QuanLiPhongTro.Models.ThanhToan
+@using QuanLiPhongTro.Helpers
+
+@{
+    ViewData["Title"] = "Chi tiết thanh toán";
+    var nguoiThue = ViewBag.TenNguoiThue as string ?? "Không rõ";
+}
+
+<h2 class="mb-4">Chi tiết thanh toán</h2>
+
+<div class="mb-3">
+    <strong>Người thuê:</strong> @nguoiThue
+</div>
+<div class="mb-3">
+    <strong>Ngày thanh toán:</strong> @Model.NgayThanhToan.ToString("dd/MM/yyyy")
+</div>
+<div class="mb-3">
+    <strong>Tổng tiền:</strong> @Model.TongTien.ToString("N0") VND
+</div>
+<div class="mb-3">
+    <strong>Trạng thái:</strong>
+    <span class="badge bg-@(GetStatusBadgeClass(Model.trangThaiThanhToan))">
+        @Model.trangThaiThanhToan.GetDisplayName()
+    </span>
+</div>
+
+<h4 class="mt-4">Chi tiết các khoản:</h4>
+
+<table class="table table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th>Loại</th>
+            <th>Mô tả</th>
+            <th>Số tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ct in Model.ChiTietThanhToans)
+        {
+            <tr>
+                <td>@ct.Loai</td>
+                <td>@ct.MoTa</td>
+                <td>@ct.SoTien.ToString("N0") VND</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.trangThaiThanhToan == TrangThaiThanhToan.ChuaThanhToan)
+{
+    <form asp-action="XacNhanThanhToan" asp-route-id="@Model.Id" method="post">
+        <button type="submit" class="btn btn-success">Tôi đã thanh toán</button>
+    </form>
+}
+
+<a asp-action="Index" class="btn btn-secondary mt-3">Quay lại danh sách</a>
+
+@functions {
+    string GetStatusBadgeClass(TrangThaiThanhToan status)
+    {
+        return status switch
+        {
+            TrangThaiThanhToan.DaThanhToan => "success",
+            TrangThaiThanhToan.ChuaThanhToan => "danger",
+            TrangThaiThanhToan.DangChoXuLy => "warning",
+            TrangThaiThanhToan.DaHuy => "secondary",
+            _ => "light"
+        };
+    }
+}

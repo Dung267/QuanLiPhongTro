@@ -1,0 +1,50 @@
+﻿@model QuanLiPhongTro.Models.ThanhToanViewModel
+@{
+    ViewData["Title"] = "Quản lý thanh toán";
+}
+
+<h2>Quản lý thanh toán</h2>
+
+<form method="get" asp-action="Index" class="row g-3 mb-3">
+    <div class="col-md-3">
+        <label>Trạng thái</label>
+        <select asp-for="TrangThai" asp-items="Model.TrangThaiList" class="form-control"></select>
+    </div>
+    <div class="col-md-3">
+        <label>Từ ngày</label>
+        <input asp-for="TuNgay" class="form-control" type="date" />
+    </div>
+    <div class="col-md-3">
+        <label>Đến ngày</label>
+        <input asp-for="DenNgay" class="form-control" type="date" />
+    </div>
+    <div class="col-md-3 align-self-end">
+        <button type="submit" class="btn btn-primary">Lọc</button>
+    </div>
+</form>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Người thuê</th>
+            <th>Ngày thanh toán</th>
+            <th>Tổng tiền</th>
+            <th>Trạng thái</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.DanhSachThanhToan)
+        {
+            <tr>
+                <td>@item.User.UserName</td>
+                <td>@item.NgayThanhToan.ToShortDateString()</td>
+                <td>@item.TongTien.ToString("N0") đ</td>
+                <td>@item.trangThaiThanhToan</td>
+                <td>
+                    <a asp-action="ChiTiet" asp-route-id="@item.Id" class="btn btn-sm btn-info">Chi tiết</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

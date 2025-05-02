@@ -51,7 +51,6 @@ namespace QuanLiPhongTro.Controllers
             return availableUsers;
         }
 
-        // ========================= THÊM ============================
         [HttpGet]
         public async Task<IActionResult> Them()
         {
@@ -62,7 +61,7 @@ namespace QuanLiPhongTro.Controllers
                     .Where(p => !p.DaChoThue)
                     .Select(p => new SelectListItem
                     {
-                        Value = p.Id,
+                        Value = p.Id, // Giữ nguyên là string
                         Text = $"{p.TenPhong} - {p.GiaTien:N0} đ"
                     }).ToListAsync(),
                 NgayBatDau = DateTime.Now
@@ -70,59 +69,6 @@ namespace QuanLiPhongTro.Controllers
 
             return View(vm);
         }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Them(HopDongViewModel vm)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        await LoadDropdownData(vm);
-        //        return View(vm);
-        //    }
-
-        //    var phong = await _context.Phongs.FindAsync(vm.PhongId);
-        //    if (phong == null || phong.DaChoThue)
-        //    {
-        //        ModelState.AddModelError("PhongId", "Phòng này đã được cho thuê");
-        //        await LoadDropdownData(vm);
-        //        return View(vm);
-        //    }
-
-        //    // Tạo hợp đồng
-        //    var hopDong = new HopDong
-        //    {
-        //        UserId = vm.UserId,
-        //        PhongId = vm.PhongId,
-        //        NgayBatDau = vm.NgayBatDau,
-        //        NgayKetThuc = vm.NgayBatDau.AddMonths(6),
-        //        TienCoc = vm.TienCoc,
-        //        DaTra = false
-        //    };
-
-        //    // Cập nhật phòng
-        //    phong.DaChoThue = true;
-        //    _context.Phongs.Update(phong);
-
-        //    // Thêm người thuê nếu chưa có
-        //    var existingNguoiThue = await _context.NguoiThues.FindAsync(vm.UserId);
-        //    if (existingNguoiThue == null)
-        //    {
-        //        var nguoiThue = new NguoiThue
-        //        {
-        //            UserId = vm.UserId,
-        //            CCCD = vm.CCCD,
-        //            SDT = vm.SDT
-        //        };
-        //        _context.NguoiThues.Add(nguoiThue);
-        //    }
-
-        //    _context.HopDongs.Add(hopDong);
-        //    await _context.SaveChangesAsync();
-
-        //    TempData["Success"] = "Thêm hợp đồng thành công.";
-        //    return RedirectToAction("DanhSach");
-        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -137,7 +83,7 @@ namespace QuanLiPhongTro.Controllers
                 }
 
                 // Kiểm tra phòng tồn tại và trống
-                var phong = await _context.Phongs.FindAsync(vm.PhongId);
+                var phong = await _context.Phongs.FirstOrDefaultAsync(p => p.Id == vm.PhongId); // Sử dụng FirstOrDefaultAsync với điều kiện string
                 if (phong == null)
                 {
                     ModelState.AddModelError("PhongId", "Phòng không tồn tại");
@@ -165,7 +111,7 @@ namespace QuanLiPhongTro.Controllers
                 var hopDong = new HopDong
                 {
                     UserId = vm.UserId,
-                    PhongId = vm.PhongId,
+                    PhongId = vm.PhongId, // Sử dụng trực tiếp string
                     NgayBatDau = vm.NgayBatDau,
                     NgayKetThuc = vm.NgayBatDau.AddMonths(6),
                     TienCoc = vm.TienCoc,
@@ -196,6 +142,42 @@ namespace QuanLiPhongTro.Controllers
 
                         _context.HopDongs.Add(hopDong);
                         await _context.SaveChangesAsync();
+                        // Tạo thanh toán cho hợp đồng này
+                        var thanhToan = new ThanhToan
+                        {
+                            UserId = vm.UserId,
+                            HopDongId = hopDong.Id,
+                            trangThaiThanhToan = TrangThaiThanhToan.ChuaThanhToan,
+                            NgayThanhToan = DateTime.Now,
+                            TongTien = phong.GiaTien * 6 + vm.TienCoc, // Tổng tiền phòng (6 tháng) cộng tiền cọc
+                            ThangNam = DateTime.Now
+                        };
+
+                        _context.ThanhToans.Add(thanhToan);
+                        await _context.SaveChangesAsync();
+
+                        // Tạo chi tiết thanh toán cho tiền phòng và tiền cọc
+                        _context.ChiTietThanhToans.Add(new ChiTietThanhToan
+                        {
+                            ThanhToanId = thanhToan.Id,
+                            Loai = "TienPhong",
+                            MoTa = $"Thanh toán tiền phòng cho phòng {phong.TenPhong}",
+                            SoTien = phong.GiaTien * 6 // Tiền phòng 6 tháng
+                        });
+
+                        _context.ChiTietThanhToans.Add(new ChiTietThanhToan
+                        {
+                            ThanhToanId = thanhToan.Id,
+                            Loai = "TienCoc",
+                            MoTa = "Tiền cọc",
+                            SoTien = vm.TienCoc
+                        });
+
+                        await _context.SaveChangesAsync();
+                        // Tự động đăng ký dịch vụ Điện và Nước cho phòng
+                        await DangKyDichVuDienNuoc(vm.PhongId); // Truyền trực tiếp string PhongId
+
+                        // Commit transaction
                         await transaction.CommitAsync();
 
                         TempData["Success"] = "Thêm hợp đồng thành công.";
@@ -216,6 +198,39 @@ namespace QuanLiPhongTro.Controllers
                 await LoadDropdownData(vm);
                 return View(vm);
             }
+        }
+
+        // Hàm tự động đăng ký dịch vụ Điện và Nước
+        private async Task DangKyDichVuDienNuoc(string phongId) // Thay đổi tham số thành string
+        {
+            var dichVuDien = await _context.DichVus.FirstOrDefaultAsync(d => d.TenDichVu == "Điện");
+            var dichVuNuoc = await _context.DichVus.FirstOrDefaultAsync(d => d.TenDichVu == "Nước");
+
+            if (dichVuDien != null)
+            {
+                _context.SuDungDichVus.Add(new SuDungDichVu
+                {
+                    PhongId = phongId, // Sử dụng string
+                    DichVuId = dichVuDien.Id,
+                    ChiSoCu = 0,
+                    ChiSoMoi = 0,
+                    ThangNam = DateTime.Today
+                });
+            }
+
+            if (dichVuNuoc != null)
+            {
+                _context.SuDungDichVus.Add(new SuDungDichVu
+                {
+                    PhongId = phongId, // Sử dụng string
+                    DichVuId = dichVuNuoc.Id,
+                    ChiSoCu = 0,
+                    ChiSoMoi = 0,
+                    ThangNam = DateTime.Today
+                });
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         // ========================= SỬA ============================

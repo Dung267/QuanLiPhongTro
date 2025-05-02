@@ -26,6 +26,7 @@ namespace QuanLiPhongTro.Models
         [DataType(DataType.Currency)]
         public decimal TienCoc { get; set; }
 
+
         [Display(Name = "Đã Trả Phòng")]
         public bool DaTra { get; set; }
 

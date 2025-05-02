@@ -28,12 +28,13 @@ namespace QuanLiPhongTro.Models
         public int DichVuId { get; set; }
 
         [ForeignKey("DichVuId")]
-        public DichVu DichVu { get; set; }
+        public DichVu ? DichVu { get; set; }
 
         [Required]
         public String PhongId { get; set; }
 
         [ForeignKey("PhongId")]
-        public Phong Phong { get; set; }
+        public Phong? Phong { get; set; }
+
     }
 }

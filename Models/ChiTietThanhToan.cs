@@ -27,5 +27,8 @@ namespace QuanLiPhongTro.Models
         [Range(0, 999999999, ErrorMessage = "Số tiền không hợp lệ")]
         [DataType(DataType.Currency)]
         public decimal SoTien { get; set; }
+
+        public int? SuDungDichVuId { get; set; }
+        public SuDungDichVu ? SuDungDichVu { get; set; }
     }
 }

@@ -4,33 +4,46 @@
     ViewData["Title"] = "Đăng ký sử dụng dịch vụ";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2>Đăng ký sử dụng dịch vụ</h2>
 
 <form asp-action="DangKySuDungDichVu" method="post">
+    <input type="hidden" asp-for="PhongId" />
+
     <div class="form-group">
-        <label asp-for="DichVuId"></label>
-        <select asp-for="DichVuId" class="form-control" asp-items="ViewBag.DichVus"></select>
+        <label asp-for="DichVuId" class="control-label"></label>
+        <select asp-for="DichVuId" class="form-control" asp-items="ViewBag.DichVus">
+            <option value="">-- Chọn dịch vụ --</option>
+        </select>
+        <span asp-validation-for="DichVuId" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="ChiSoCu"></label>
-        <input asp-for="ChiSoCu" class="form-control" />
-        <span asp-validation-for="ChiSoCu" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ChiSoMoi"></label>
-        <input asp-for="ChiSoMoi" class="form-control" />
-        <span asp-validation-for="ChiSoMoi" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ThangNam"></label>
+        <label asp-for="ThangNam" class="control-label"></label>
         <input asp-for="ThangNam" class="form-control" type="month" />
         <span asp-validation-for="ThangNam" class="text-danger"></span>
     </div>
 
-    <input type="hidden" name="PhongId" value="@ViewBag.PhongId" />
+    <!-- Ẩn chỉ số -->
+    <input type="hidden" asp-for="ChiSoCu" value="0" />
+    <input type="hidden" asp-for="ChiSoMoi" value="0" />
 
     <button type="submit" class="btn btn-primary">Đăng ký</button>
 </form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-warning">
+        <strong>Lỗi nhập liệu:</strong>
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

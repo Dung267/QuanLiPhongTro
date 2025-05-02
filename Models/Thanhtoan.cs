@@ -35,6 +35,9 @@ namespace QuanLiPhongTro.Models
         [DataType(DataType.Currency)]
         public decimal TongTien { get; set; }
 
+        [Display(Name = "Tháng/Năm")]
+        [DataType(DataType.Date)]
+        public DateTime ThangNam { get; set; }
         public ICollection<ChiTietThanhToan> ChiTietThanhToans { get; set; } = new List<ChiTietThanhToan>();
     }
 

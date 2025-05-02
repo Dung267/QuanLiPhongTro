@@ -1,18 +1,22 @@
-﻿﻿@* @model IEnumerable<QuanLiPhongTro.Models.ThanhToan>
+﻿@* @model IEnumerable<QuanLiPhongTro.Models.ThanhToan>
 @{
-    ViewData["Title"] = "Quản lý thanh toán";
+    ViewData["Title"] = "Danh sách hóa đơn";
 }
 
 <h2>@ViewData["Title"]</h2>
 
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>Người dùng</th>
-            <th>Hợp đồng</th>
-            <th>Ngày thanh toán</th>
-            <th>Số tiền</th>
+            <th>Phòng</th>
+            <th>Tháng/Năm</th>
             <th>Trạng thái</th>
+            <th>Ngày thanh toán</th>
             <th></th>
         </tr>
     </thead>
@@ -20,69 +24,63 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.User.UserName</td>
-                <td>@item.HopDongId</td>
-                <td>@item.NgayThanhToan.ToShortDateString()</td>
-                <td>@item.TongTien.ToString("C")</td>
+                <td>@item.HopDong?.Phong?.TenPhong</td>
+                <td>@item.ThangNam.ToString("MM/yyyy")</td>
                 <td>@item.trangThaiThanhToan</td>
+                <td>@(item.NgayThanhToan.ToString("dd/MM/yyyy") ?? "Chưa thanh toán")</td>
                 <td>
-                    <a asp-action="ChiTiet" asp-route-id="@item.Id">Chi tiết</a> |
-                    <form asp-action="Xoa" asp-route-id="@item.Id" method="post" style="display:inline">
-                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
-                    </form>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Chi tiết</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<a asp-action="Them" class="btn btn-primary">Thêm thanh toán</a>
- *@
 
- @model QuanLiPhongTro.Models.ThanhToanViewModel
+ *@
+@model IEnumerable<QuanLiPhongTro.Models.ThanhToan>
 @{
-    ViewData["Title"] = "Quản lý thanh toán";
+    ViewData["Title"] = "Lịch sử thanh toán";
 }
 
-<h2>Quản lý thanh toán</h2>
+<h2>Lịch sử thanh toán</h2>
 
-<form method="get" asp-action="Index" class="row g-3 mb-3">
-    <div class="col-md-3">
-        <label>Trạng thái</label>
-        <select asp-for="TrangThai" asp-items="Model.TrangThaiList" class="form-control"></select>
-    </div>
-    <div class="col-md-3">
-        <label>Từ ngày</label>
-        <input asp-for="TuNgay" class="form-control" type="date" />
-    </div>
-    <div class="col-md-3">
-        <label>Đến ngày</label>
-        <input asp-for="DenNgay" class="form-control" type="date" />
-    </div>
-    <div class="col-md-3 align-self-end">
-        <button type="submit" class="btn btn-primary">Lọc</button>
-    </div>
-</form>
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
 
-<table class="table table-bordered">
+<table class="table">
     <thead>
         <tr>
-            <th>Người thuê</th>
-            <th>Ngày thanh toán</th>
+            <th>Phòng</th>
+            <th>Tháng/Năm</th>
             <th>Tổng tiền</th>
             <th>Trạng thái</th>
+            <th>Ngày thanh toán</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.DanhSachThanhToan)
+        @foreach (var item in Model)
         {
             <tr>
-                <td>@item.User.UserName</td>
-                <td>@item.NgayThanhToan.ToShortDateString()</td>
-                <td>@item.TongTien.ToString("N0") đ</td>
+                <td>@item.HopDong.Phong.TenPhong</td>
+                <td>@item.ThangNam.ToString("MM/yyyy")</td>
+                <td>@item.TongTien.ToString("N0") VND</td>
                 <td>@item.trangThaiThanhToan</td>
+                <td>@item.NgayThanhToan.ToString("dd/MM/yyyy")</td>
                 <td>
-                    <a asp-action="ChiTiet" asp-route-id="@item.Id" class="btn btn-sm btn-info">Chi tiết</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Chi tiết</a>
+                    @if (item.trangThaiThanhToan == TrangThaiThanhToan.ChuaThanhToan)
+                    {
+                        <form asp-action="ThanhToan" method="post" asp-route-id="@item.Id" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-success">Thanh toán</button>
+                        </form>
+                    }
                 </td>
             </tr>
         }

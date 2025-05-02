@@ -1,31 +1,51 @@
 ﻿@model QuanLiPhongTro.Models.DichVu
-
 @{
     ViewData["Title"] = "Thêm dịch vụ mới";
 }
 
-<h1>Thêm dịch vụ mới</h1>
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3 class="card-title mb-0">
+                <i class="fas fa-plus-circle me-2"></i>@ViewData["Title"]
+            </h3>
+        </div>
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="TenDichVu" class="control-label"></label>
-                <input asp-for="TenDichVu" class="form-control" />
-                <span asp-validation-for="TenDichVu" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DonGia" class="control-label"></label>
-                <input asp-for="DonGia" class="form-control" />
-                <span asp-validation-for="DonGia" class="text-danger"></span>
-            </div>
-            <div class="form-group mt-3">
-                <input type="submit" value="Thêm" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
-            </div>
-        </form>
+        <div class="card-body">
+            <form asp-action="Create" method="post" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            <label asp-for="TenDichVu" class="form-label fw-bold">Tên dịch vụ</label>
+                            <input asp-for="TenDichVu" class="form-control" placeholder="Nhập tên dịch vụ" />
+                            <span asp-validation-for="TenDichVu" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label asp-for="DonGia" class="form-label fw-bold">Đơn giá</label>
+                            <div class="input-group">
+                                <input asp-for="DonGia" id="DonGiaInput" class="form-control text-end"
+                                       placeholder="VD: 100,000" type="text" inputmode="numeric" />
+                                <span class="input-group-text bg-white">₫</span>
+                            </div>
+                            <span asp-validation-for="DonGia" class="text-danger small"></span>
+                            <div class="form-text">Nhập số tiền (tối thiểu 1,000đ và chia hết cho 1,000)</div>
+                        </div>
+
+                        <div class="form-group mt-4">
+                            <button type="submit" class="btn btn-success me-2">
+                                <i class="fas fa-save me-1"></i> Thêm mới
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-list me-1"></i> Danh sách dịch vụ
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -33,4 +53,71 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        // Định dạng tiền tệ khi tải trang (nếu có giá trị mặc định)
+        document.addEventListener('DOMContentLoaded', function () {
+            const giaInput = document.getElementById('DonGiaInput');
+            if (giaInput.value) {
+                formatCurrencyInput(giaInput);
+            }
+        });
+
+        // Định dạng khi rời khỏi trường nhập
+        document.getElementById('DonGiaInput').addEventListener('blur', function () {
+            formatCurrencyInput(this);
+            validatePriceInput(this);
+        });
+
+        // Xóa định dạng khi focus vào
+        document.getElementById('DonGiaInput').addEventListener('focus', function () {
+            this.value = this.value.replace(/[^\d]/g, '');
+        });
+
+        // Kiểm tra giá trị khi nhập
+        document.getElementById('DonGiaInput').addEventListener('input', function () {
+            validatePriceInput(this);
+        });
+
+        // Đảm bảo gửi giá trị số khi submit
+        document.querySelector('form').addEventListener('submit', function () {
+            const input = document.getElementById('DonGiaInput');
+            input.value = input.value.replace(/[^\d]/g, '');
+        });
+
+        function formatCurrencyInput(inputElement) {
+            let value = inputElement.value.replace(/[^\d]/g, '');
+            if (value) {
+                inputElement.value = parseInt(value).toLocaleString('vi-VN');
+            }
+        }
+
+        function validatePriceInput(inputElement) {
+            const value = inputElement.value.replace(/[^\d]/g, '');
+            const errorSpan = inputElement.nextElementSibling.nextElementSibling;
+
+            if (value && (parseInt(value) < 1000 || parseInt(value) % 1000 !== 0)) {
+                errorSpan.textContent = 'Giá tiền phải ≥ 1,000đ và chia hết cho 1,000';
+                inputElement.classList.add('is-invalid');
+            } else {
+                errorSpan.textContent = '';
+                inputElement.classList.remove('is-invalid');
+            }
+        }
+    </script>
+
+    <style>
+        .input-group-text {
+            min-width: 40px;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .form-control.text-end {
+            text-align: right;
+        }
+        .form-text {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+    </style>
 }

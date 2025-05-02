@@ -4,14 +4,44 @@
     ViewData["Title"] = "Báo cáo sự cố";
 }
 
-<h2>Báo cáo sự cố</h2>
+<h2>@ViewData["Title"]</h2>
 
 <form asp-action="BaoCaoSuCo" method="post">
+    @Html.AntiForgeryToken()
+
+    @if (ViewBag.TenPhong != null)
+    {
+        <div class="form-group">
+            <label>Phòng:</label>
+            <input class="form-control" value="@ViewBag.TenPhong" readonly />
+        </div>
+    }
+
+    <!-- Hidden truyền PhongId về controller -->
+    <input type="hidden" name="PhongId" value="@ViewBag.PhongId" />
+
     <div class="form-group">
         <label asp-for="MoTa"></label>
         <textarea asp-for="MoTa" class="form-control"></textarea>
         <span asp-validation-for="MoTa" class="text-danger"></span>
     </div>
+
     <button type="submit" class="btn btn-primary">Gửi báo cáo</button>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-warning mt-3">
+            <strong>Lỗi nhập liệu:</strong>
+            <ul>
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
 </form>
 
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

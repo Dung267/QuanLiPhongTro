@@ -1,57 +1,33 @@
 ﻿@model IEnumerable<QuanLiPhongTro.Models.SuDungDichVu>
 
 @{
-    ViewData["Title"] = "Danh sách sử dụng dịch vụ";
+    ViewData["Title"] = "Danh Sách Phòng Sử Dụng Dịch Vụ";
 }
 
-<h1>Danh sách sử dụng dịch vụ</h1>
+<h2>@ViewData["Title"]</h2>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Thêm mới</a>
-</p>
-<table class="table table-striped table-bordered">
+<table class="table">
     <thead>
         <tr>
-            <th>
-                Phòng
-            </th>
-            <th>
-                Dịch vụ
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ThangNam)
-            </th>
-            <th>
-                Chỉ số cũ
-            </th>
-            <th>
-                Chỉ số mới
-            </th>
-            <th></th>
+            <th>Phòng</th>
+            <th>Dịch Vụ</th>
+            <th>Chỉ Số Cũ</th>
+            <th>Chỉ Số Mới</th>
+            <th>Tháng/Năm</th>
+            <th>Hành Động</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
+                <td>@item.Phong.TenPhong</td>
+                <td>@item.DichVu.TenDichVu</td>
+                <td>@item.ChiSoCu</td>
+                <td>@item.ChiSoMoi</td>
+                <td>@item.ThangNam.ToString("MM/yyyy")</td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Phong.TenPhong)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DichVu.TenDichVu)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ThangNam)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ChiSoCu)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ChiSoMoi)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Sửa</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Xóa</a>
+                    <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-primary">Cập Nhật</a>
                 </td>
             </tr>
         }
