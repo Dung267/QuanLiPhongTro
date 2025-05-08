@@ -1,8 +1,254 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Bootstrap Carousel Banner (giữ nguyên ảnh cũ) -->
+<div id="bannerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000" data-bs-pause="false">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <a href="https://bandon.vn/uploads/thiet-ke-nha-tro-dep-2020-bandon-11.jpg" target="_blank">
+                <img src="https://bandon.vn/uploads/thiet-ke-nha-tro-dep-2020-bandon-11.jpg" class="d-block w-100 banner-img" alt="Design Image 1">
+            </a>
+        </div>
+        <div class="carousel-item">
+            <a href="https://spacet-release.s3.ap-southeast-1.amazonaws.com/img/blog/2023-10-04/mau-thiet-ke-toi-gian-651cda65c9649b0ef5c6f426.webp" target="_blank">
+                <img src="https://spacet-release.s3.ap-southeast-1.amazonaws.com/img/blog/2023-10-04/mau-thiet-ke-toi-gian-651cda65c9649b0ef5c6f426.webp" class="d-block w-100 banner-img" alt="Design Image 2">
+            </a>
+        </div>
+        <div class="carousel-item">
+            <a href="https://spacet-release.s3.ap-southeast-1.amazonaws.com/img/blog/2023-10-04/guong-duoc-van-dung-giup-an-gian-dien-tich-651cda66c9649b0ef5c6f441.webp" target="_blank">
+                <img src="https://spacet-release.s3.ap-southeast-1.amazonaws.com/img/blog/2023-10-04/guong-duoc-van-dung-giup-an-gian-dien-tich-651cda66c9649b0ef5c6f441.webp" class="d-block w-100 banner-img" alt="Design Image 3">
+            </a>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
 </div>
+
+<style>
+    #bannerCarousel {
+        width: 100%;
+        height: 100vh; /* Chiều cao full màn hình */
+        overflow: hidden;
+    }
+
+    .banner-img {
+        height: 100vh; /* Chiều cao full màn hình */
+        object-fit: cover; /* Phủ kín không bị méo */
+    }
+</style>
+
+<div class="features-section">
+    <h2 class="section-title text-center mb-5">Chuyển đổi số lĩnh vực BĐS cho thuê cùng ChillHome</h2>
+    <div class="row justify-content-center">
+        <!-- Card 1 -->
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="feature-card text-center">
+                <img src="https://cdn-icons-png.flaticon.com/512/104/104978.png" alt="Tự động gạch nợ" class="feature-icon mb-3">
+                <h5 class="feature-title">Hóa đơn tự động</h5>
+                <p>Hóa đơn tự tạo trên hệ thống, tiền trừ vào STK của người thuê nhà, hệ thống xác nhận thu tiền.</p>
+            </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="feature-card text-center">
+                <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" alt="Gửi nhiều hóa đơn" class="feature-icon mb-3">
+                <h5 class="feature-title">Gửi nhiều hóa đơn</h5>
+                <p>Chỉ một thao tác để gửi cho toàn bộ KH qua Zalo, Email, App cư dân.</p>
+            </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="feature-card text-center">
+                <img src="https://cdn-icons-png.flaticon.com/512/3299/3299884.png" alt="Tích hợp IOT" class="feature-icon mb-3">
+                <h5 class="feature-title">Tích hợp IOT</h5>
+                <p>Tích hợp công tơ điện tử giúp đọc ghi chỉ số, ngừng cấp điện từ xa.</p>
+            </div>
+        </div>
+        <!-- Card 4 -->
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="feature-card text-center">
+                <img src="https://cdn-icons-png.flaticon.com/512/1250/1250678.png" alt="Ký hợp đồng Online" class="feature-icon mb-3">
+                <h5 class="feature-title">Ký hợp đồng Online</h5>
+                <p>KH xem điều khoản và ký trực tiếp trên màn hình điện thoại/máy tính.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .feature-card {
+        background: #f9f9f9;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        height: 100%;
+    }
+
+    .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .feature-section .row:not(:last-child) {
+        margin-bottom: 60px;
+    }
+
+    .feature-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .feature-title {
+        font-weight: 600;
+        margin-bottom: 60px;
+    }
+</style>
+
+<div class="feature-section py-5">
+    <div class="container">
+        <!-- Block 1 -->
+        <div class="row align-items-center mb-5">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <img src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png" alt="Hỗ trợ kỹ thuật" class="img-fluid">
+            </div>
+            <div class="col-md-6">
+                <h3>Hỗ trợ kỹ thuật 24/7</h3>
+                <p>Chúng tôi cung cấp dịch vụ hỗ trợ kỹ thuật 24/7 giúp khách hàng xử lý sự cố nhanh chóng và đảm bảo hệ thống vận hành ổn định liên tục. Đội ngũ kỹ thuật viên luôn sẵn sàng hỗ trợ qua điện thoại, email hoặc trực tiếp tại hiện trường.</p>
+                <a href="#" class="btn btn-success mt-3">Liên hệ ngay →</a>
+            </div>
+        </div>
+
+        <!-- Block 2 -->
+        <div class="row align-items-center mb-5 flex-md-row-reverse">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <img src="https://cdn-icons-png.flaticon.com/512/2920/2920089.png" alt="Quản lý báo cáo" class="img-fluid">
+            </div>
+            <div class="col-md-6">
+                <h3>Quản lý báo cáo thông minh</h3>
+                <p>Hệ thống tự động tạo và xuất báo cáo chi tiết giúp bạn nắm bắt kịp thời mọi số liệu vận hành. Tùy chỉnh định dạng báo cáo theo nhu cầu, hỗ trợ xuất Excel/PDF nhanh chóng, dễ dàng theo dõi và phân tích.</p>
+                <a href="#" class="btn btn-success mt-3">Xem demo →</a>
+            </div>
+        </div>
+
+        <!-- Block 3 -->
+        <div class="row align-items-center mb-5">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <img src="https://cdn-icons-png.flaticon.com/512/3062/3062634.png" alt="Bảo mật dữ liệu" class="img-fluid">
+            </div>
+            <div class="col-md-6">
+                <h3>Bảo mật dữ liệu tối ưu</h3>
+                <p>Chúng tôi áp dụng các chuẩn bảo mật hàng đầu, mã hóa dữ liệu và phân quyền chặt chẽ giúp bảo vệ tuyệt đối thông tin khách hàng. Đảm bảo an toàn và tuân thủ quy định về bảo mật dữ liệu cá nhân.</p>
+                <a href="#" class="btn btn-success mt-3">Tìm hiểu thêm →</a>
+            </div>
+        </div>
+
+        <!-- Block 4 -->
+        <div class="row align-items-center mb-5 flex-md-row-reverse">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <img src="https://cdn-icons-png.flaticon.com/512/2910/2910768.png" alt="Giao diện dễ sử dụng" class="img-fluid">
+            </div>
+            <div class="col-md-6">
+                <h3>Giao diện dễ sử dụng</h3>
+                <p>Thiết kế giao diện thân thiện, đơn giản và trực quan giúp người dùng thao tác nhanh chóng mà không cần đào tạo nhiều. Hỗ trợ đa nền tảng trên máy tính và điện thoại.</p>
+                <a href="#" class="btn btn-success mt-3">Trải nghiệm ngay →</a>
+            </div>
+        </div>
+
+        <!-- Block 5 -->
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Tùy chỉnh linh hoạt" class="img-fluid">
+            </div>
+            <div class="col-md-6">
+                <h3>Tùy chỉnh linh hoạt</h3>
+                <p>Hệ thống hỗ trợ tùy chỉnh linh hoạt theo nhu cầu quản lý riêng biệt của từng doanh nghiệp. Từ quy trình làm việc đến báo cáo, mọi thứ đều có thể cấu hình dễ dàng.</p>
+                <a href="#" class="btn btn-success mt-3">Xem chi tiết →</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .feature-section h3 {
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .feature-section p {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .feature-section img.img-fluid {
+        max-width: 80%; /* Giới hạn tối đa ảnh chỉ chiếm 80% khối chứa */
+        display: block;
+        margin: 0 auto; /* Canh giữa ảnh */
+    }
+</style>
+
+<footer class="footer-section py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <!-- Column 1 -->
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5 class="text-success fw-bold">CÔNG TY TNHH ChillHome VIỆT NAM</h5>
+                <p><i class="bi bi-hash"></i> MST: 9999999999</p>
+                <p><i class="bi bi-geo-alt-fill"></i> Số 123 Đường Demo, Phường Mẫu, Quận Test, Thành phố Không Có Thật</p>
+                <p><i class="bi bi-briefcase-fill"></i> Tầng 10, Tòa nhà Ảo, Đường Giả Lập, Thành phố Demo</p>
+                <p><i class="bi bi-envelope-fill"></i> contact@giacongty.vn</p>
+                <p><i class="bi bi-telephone-fill"></i> 0123 456 789</p>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5 class="text-success fw-bold">VỀ GIẢ CÔNG TY</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#">Khách hàng hư cấu</a></li>
+                    <li><a href="#">Đối tác ảo</a></li>
+                    <li><a href="#">Tin tức không thật</a></li>
+                    <li><a href="#">Điều khoản tưởng tượng</a></li>
+                    <li><a href="#">Chính sách minh họa</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3 -->
+            <div class="col-md-4">
+                <h5 class="text-success fw-bold">LIÊN HỆ & HỖ TRỢ</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#">Liên hệ giả</a></li>
+                    <li><a href="#">Câu hỏi ảo thường gặp</a></li>
+                    <li><a href="#">Hướng dẫn Web demo</a></li>
+                    <li><a href="#">Hướng dẫn App mẫu</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap Icons (nếu chưa có) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+    .footer-section p, .footer-section a {
+        font-size: 14px;
+        color: #333;
+        text-decoration: none;
+    }
+
+        .footer-section a:hover {
+            text-decoration: underline;
+        }
+
+    .footer-section h5 {
+        margin-bottom: 20px;
+    }
+
+    .footer-section i {
+        margin-right: 8px;
+        color: #28a745;
+    }
+</style>
