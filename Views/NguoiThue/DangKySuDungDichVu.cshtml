@@ -4,46 +4,122 @@
     ViewData["Title"] = "Đăng ký sử dụng dịch vụ";
 }
 
-<h2>Đăng ký sử dụng dịch vụ</h2>
+<style>
+    .service-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
 
-<form asp-action="DangKySuDungDichVu" method="post">
-    <input type="hidden" asp-for="PhongId" />
+    .service-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #2e7d32;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #a5d6a7;
+    }
 
-    <div class="form-group">
-        <label asp-for="DichVuId" class="control-label"></label>
-        <select asp-for="DichVuId" class="form-control" asp-items="ViewBag.DichVus">
-            <option value="">-- Chọn dịch vụ --</option>
-        </select>
-        <span asp-validation-for="DichVuId" class="text-danger"></span>
-    </div>
+    /* Màu cho input fields */
+    .form-control {
+        border-color: #a5d6a7;
+    }
 
-    <div class="form-group">
-        <label asp-for="ThangNam" class="control-label"></label>
-        <input asp-for="ThangNam" class="form-control" type="month" />
-        <span asp-validation-for="ThangNam" class="text-danger"></span>
-    </div>
+    .form-control:focus {
+        border-color: #4caf50;
+        box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
+    }
 
-    <!-- Ẩn chỉ số -->
-    <input type="hidden" asp-for="ChiSoCu" value="0" />
-    <input type="hidden" asp-for="ChiSoMoi" value="0" />
+    /* Màu cho label */
+    .control-label {
+        color: #2e7d32;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
 
-    <button type="submit" class="btn btn-primary">Đăng ký</button>
-</form>
+    /* Màu cho nút đăng ký */
+    .btn-register {
+        background-color: #4caf50;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        transition: all 0.3s;
+        width: 100%;
+        margin-top: 1rem;
+    }
 
-@if (!ViewData.ModelState.IsValid)
-{
-    <div class="alert alert-warning">
-        <strong>Lỗi nhập liệu:</strong>
-        <ul>
-            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-            {
-                <li>@error.ErrorMessage</li>
-            }
-        </ul>
-    </div>
-}
+    .btn-register:hover {
+        background-color: #388e3c;
+    }
+
+    /* Màu cho thông báo lỗi */
+    .alert-warning {
+        background-color: #fff8e1;
+        border-color: #ffe0b2;
+        color: #ff6f00;
+        margin-top: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    select option:first-child {
+        color: #757575;
+    }
+</style>
+
+<div class="service-container">
+    <h2 class="service-title">@ViewData["Title"]</h2>
+
+    <form asp-action="DangKySuDungDichVu" method="post">
+        <input type="hidden" asp-for="PhongId" />
+
+        <div class="form-group">
+            <label asp-for="DichVuId" class="control-label">Dịch vụ</label>
+            <select asp-for="DichVuId" class="form-control" asp-items="ViewBag.DichVus">
+                <option value="">-- Chọn dịch vụ --</option>
+            </select>
+            <span asp-validation-for="DichVuId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ThangNam" class="control-label">Tháng/Năm sử dụng</label>
+            <input asp-for="ThangNam" class="form-control" type="month" />
+            <span asp-validation-for="ThangNam" class="text-danger"></span>
+        </div>
+
+        <!-- Ẩn chỉ số -->
+        <input type="hidden" asp-for="ChiSoCu" value="0" />
+        <input type="hidden" asp-for="ChiSoMoi" value="0" />
+
+        <button type="submit" class="btn btn-primary btn-register">
+            <i class="fas fa-paper-plane"></i> Đăng ký
+        </button>
+    </form>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-warning mt-3">
+            <strong>Lỗi nhập liệu:</strong>
+            <ul class="mb-0">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+</div>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <!-- Thêm Font Awesome cho icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 }

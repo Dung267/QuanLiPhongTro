@@ -1,47 +1,121 @@
 ﻿@model QuanLiPhongTro.Models.SuCo
-
 @{
     ViewData["Title"] = "Báo cáo sự cố";
 }
 
-<h2>@ViewData["Title"]</h2>
+<style>
+    .report-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
 
-<form asp-action="BaoCaoSuCo" method="post">
-    @Html.AntiForgeryToken()
+    .report-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #2e7d32; /* Màu xanh lá đậm */
+        text-align: center;
+    }
 
-    @if (ViewBag.TenPhong != null)
-    {
+    /* Màu cho input fields */
+    .form-control {
+        border-color: #a5d6a7; /* Màu xanh lá nhạt */
+    }
+
+    .form-control:focus {
+        border-color: #4caf50; /* Màu xanh lá đậm hơn khi focus */
+        box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
+    }
+
+    /* Màu cho label */
+    .form-group label {
+        color: #2e7d32; /* Màu xanh lá đậm */
+        font-weight: 500;
+    }
+
+    /* Màu cho nút submit */
+    .btn-submit {
+        background-color: #4caf50;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        transition: all 0.3s;
+        width: 100%;
+    }
+
+    .btn-submit:hover {
+        background-color: #388e3c;
+    }
+
+    /* Màu cho thông báo lỗi */
+    .alert-warning {
+        background-color: #fff8e1;
+        border-color: #ffe0b2;
+        color: #ff6f00;
+    }
+
+    .readonly-input {
+        background-color: #f5f5f5;
+        color: #616161;
+    }
+
+    textarea {
+        min-height: 150px;
+        resize: vertical;
+    }
+</style>
+
+<div class="report-container">
+    <h2 class="report-title">@ViewData["Title"]</h2>
+
+    <form asp-action="BaoCaoSuCo" method="post">
+        @Html.AntiForgeryToken()
+
+        @if (ViewBag.TenPhong != null)
+        {
+            <div class="form-group mb-4">
+                <label>Phòng:</label>
+                <input class="form-control readonly-input" value="@ViewBag.TenPhong" readonly />
+            </div>
+        }
+
+        <!-- Hidden truyền PhongId về controller -->
+        <input type="hidden" name="PhongId" value="@ViewBag.PhongId" />
+
+        <div class="form-group mb-4">
+            <label asp-for="MoTa">Mô tả sự cố</label>
+            <textarea asp-for="MoTa" class="form-control" placeholder="Mô tả chi tiết sự cố bạn gặp phải..."></textarea>
+            <span asp-validation-for="MoTa" class="text-danger"></span>
+        </div>
+
         <div class="form-group">
-            <label>Phòng:</label>
-            <input class="form-control" value="@ViewBag.TenPhong" readonly />
+            <button type="submit" class="btn btn-primary btn-submit">
+                <i class="fas fa-paper-plane"></i> Gửi báo cáo
+            </button>
         </div>
-    }
 
-    <!-- Hidden truyền PhongId về controller -->
-    <input type="hidden" name="PhongId" value="@ViewBag.PhongId" />
-
-    <div class="form-group">
-        <label asp-for="MoTa"></label>
-        <textarea asp-for="MoTa" class="form-control"></textarea>
-        <span asp-validation-for="MoTa" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Gửi báo cáo</button>
-
-    @if (!ViewData.ModelState.IsValid)
-    {
-        <div class="alert alert-warning mt-3">
-            <strong>Lỗi nhập liệu:</strong>
-            <ul>
-                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    <li>@error.ErrorMessage</li>
-                }
-            </ul>
-        </div>
-    }
-</form>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-warning mt-3">
+                <strong>Lỗi nhập liệu:</strong>
+                <ul class="mb-0">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+    </form>
+</div>
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <!-- Thêm Font Awesome cho icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 }

@@ -1,69 +1,82 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - QuanLiPhongTro</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min (1).css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/QuanLiPhongTro.styles.css" asp-append-version="true" />
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons (nếu chưa có) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- AOS CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+    <style></style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg bg-success" data-bs-theme="dark">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">QuanLiPhongTro</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                    @* <img src="https://vi.pngtree.com/freepng/stay-home-vector-clipart-with-blue-heart_6318758.html" alt="Logo" style="height: 60px; margin-right: 10px;" /> *@
+                    Chill Home
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse" id="navbarColor02">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">
+                                Home
+                                <span class="visually-hidden">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         @if (User.IsInRole("ChuTro"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="ToaNha" asp-action="Index">Quản lý Tòa Nhà</a>
+                                <a class="nav-link" asp-controller="HopDong" asp-action="DanhSach">Hợp đồng</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Phong" asp-action="Index">Quản lý Phòng</a>
+                                <a class="nav-link" asp-controller="SuCo_ChuTro" asp-action="DanhSachSuCo">Sự cố</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="SuCo_ChuTro" asp-action="DanhSachSuCo">Quản lý sự cố</a>
+                                <a class="nav-link" asp-controller="BaoCao" asp-action="BaoCaoTaiChinh">Báo Cáo Tài Chính</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="BaoCao" asp-action="BaoCaoTaiChinh">Báo Cáo Tài Chính</a>
+                                <a class="nav-link" asp-controller="ThongBao" asp-action="Tao">Đăng tin</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="HopDong" asp-action="DanhSach">Hợp Đồng</a>
-                            </li>
-                        } 
+
+                        }
                         @if (User.IsInRole("User"))
                         {
-                            //<li class="nav-item">
-                              //  <a class="nav-link text-dark" asp-controller="HopDong" asp-action="DanhSach">Xem Hợp Đồng</a>
-                            //</li>
+
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="NguoiThue" asp-action="HoaDonCuaToi">Xem Thanh Toán</a>
+                                <a class="nav-link" asp-controller="NguoiThue" asp-action="HopDongCuaToi">Hợp Đồng</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="NguoiThue" asp-action="BaoCaoSuCo">Báo cáo sự cố</a>
+                                <a class="nav-link" asp-controller="ThanhToan" asp-action="Index">Thanh Toán</a>
                             </li>
+
                         }
                         @if (User.IsInRole("QuanLi"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="SuCo_QL" asp-action="Index">Quản Lí Sự Cố</a>
+                                <a class="nav-link" asp-controller="SuCo_QL" asp-action="Index">Sự Cố</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="ThongBao" asp-action="Tao">Đăng tin</a>
                             </li>
                         }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        
                     </ul>
+
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -75,16 +88,81 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer-section py-5 bg-light">
         <div class="container">
-            &copy; 2025 - QuanLiPhongTro - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row">
+                <!-- Column 1 -->
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="text-success fw-bold">CÔNG TY TNHH ChillHome VIỆT NAM</h5>
+                    <p><i class="bi bi-hash"></i> MST: 9999999999</p>
+                    <p><i class="bi bi-geo-alt-fill"></i> Số 123 Đường Demo, Phường Mẫu, Quận Test, Thành phố Không Có Thật</p>
+                    <p><i class="bi bi-briefcase-fill"></i> Tầng 10, Tòa nhà Ảo, Đường Giả Lập, Thành phố Demo</p>
+                    <p><i class="bi bi-envelope-fill"></i> contact@giacongty.vn</p>
+                    <p><i class="bi bi-telephone-fill"></i> 0123 456 789</p>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="text-success fw-bold">VỀ GIẢ CÔNG TY</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Khách hàng hư cấu</a></li>
+                        <li><a href="#">Đối tác ảo</a></li>
+                        <li><a href="#">Tin tức không thật</a></li>
+                        <li><a href="#">Điều khoản tưởng tượng</a></li>
+                        <li><a href="#">Chính sách minh họa</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="col-md-4">
+                    <h5 class="text-success fw-bold">LIÊN HỆ & HỖ TRỢ</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Liên hệ giả</a></li>
+                        <li><a href="#">Câu hỏi ảo thường gặp</a></li>
+                        <li><a href="#">Hướng dẫn Web demo</a></li>
+                        <li><a href="#">Hướng dẫn App mẫu</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </footer>
+
+
+
+    <style>
+        .footer-section p, .footer-section a {
+            font-size: 14px;
+            color: #333;
+            text-decoration: none;
+        }
+
+            .footer-section a:hover {
+                text-decoration: underline;
+            }
+
+        .footer-section h5 {
+            margin-bottom: 20px;
+        }
+
+        .footer-section i {
+            margin-right: 8px;
+            color: #28a745;
+        }
+    </style>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <!-- Bootstrap 5 Bundle JS (bao gồm Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <!-- AOS JS -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800, // Thời gian hiệu ứng (ms)
+            once: true     // Chạy một lần khi cuộn tới
+        });
+    </script>
+
 </body>
 </html>

@@ -218,49 +218,7 @@ namespace QuanLiPhongTro.Controllers
             return View(model);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> DangKySuDungDichVu(SuDungDichVu model)
-        //{
-        //    var user = await _userManager.GetUserAsync(User);
-        //    var hopDong = await _context.HopDongs
-        //        .FirstOrDefaultAsync(h => h.UserId == user.Id && !h.DaTra);
-
-        //    if (hopDong == null)
-        //    {
-        //        TempData["Error"] = "Bạn chưa có hợp đồng thuê phòng.";
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    model.PhongId = hopDong.PhongId;
-        //    model.ChiSoCu = 0;
-        //    model.ChiSoMoi = 0;
-
-        //    // ✅ Kiểm tra đã đăng ký dịch vụ chưa
-        //    bool daDangKy = await _context.SuDungDichVus
-        //        .AnyAsync(s => s.PhongId == model.PhongId && s.DichVuId == model.DichVuId);
-
-        //    if (daDangKy)
-        //    {
-        //        TempData["Error"] = "Dịch vụ này đã được đăng ký.";
-        //        return RedirectToAction("DichVuDaDangKy");
-        //    }
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        var dichVus = await _context.DichVus
-        //            .Where(d => d.TenDichVu != "Điện" && d.TenDichVu != "Nước")
-        //            .ToListAsync();
-        //        ViewBag.DichVus = new SelectList(dichVus, "Id", "TenDichVu");
-
-        //        return View(model);
-        //    }
-
-        //    _context.SuDungDichVus.Add(model);
-        //    await _context.SaveChangesAsync();
-
-        //    TempData["Success"] = "Đăng ký dịch vụ thành công.";
-        //    return RedirectToAction("DichVuDaDangKy");
-        //}
+       
 
         [HttpPost]
         public async Task<IActionResult> DangKySuDungDichVu(SuDungDichVu model)
@@ -370,46 +328,46 @@ namespace QuanLiPhongTro.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
-        {
-            try
-            {
-                var user = await _userManager.GetUserAsync(User);
-                if (user == null) return NotFound();
+        //public async Task<IActionResult> Index()
+        //{
+        //    try
+        //    {
+        //        var user = await _userManager.GetUserAsync(User);
+        //        if (user == null) return NotFound();
 
-                var nguoiThue = await _context.NguoiThues
-                    .Include(n => n.HopDongs)
-                    .ThenInclude(h => h.Phong)
-                    .FirstOrDefaultAsync(n => n.UserId == user.Id);
+        //        var nguoiThue = await _context.NguoiThues
+        //            .Include(n => n.HopDongs)
+        //            .ThenInclude(h => h.Phong)
+        //            .FirstOrDefaultAsync(n => n.UserId == user.Id);
 
-                if (nguoiThue == null) return NotFound();
+        //        if (nguoiThue == null) return NotFound();
 
-                var phongIds = nguoiThue.HopDongs.Where(h => !h.DaTra).Select(h => h.PhongId).ToList();
+        //        var phongIds = nguoiThue.HopDongs.Where(h => !h.DaTra).Select(h => h.PhongId).ToList();
 
-                var model = new DashboardNguoiThueViewModel
-                {
-                    HopDongHienTai = nguoiThue.HopDongs
-                        .Where(h => h.DaTra == false)
-                        .OrderByDescending(h => h.NgayBatDau)
-                        .FirstOrDefault(),
-                    SuCos = await _context.SuCos
-                        .Where(s => phongIds.Contains(s.PhongId))
-                        .OrderByDescending(s => s.NgayBaoCao)
-                        .Take(5)
-                        .ToListAsync(),
-                    HoaDons = await _context.ThanhToans
-                        .Where(t => t.UserId == nguoiThue.UserId)
-                        .OrderByDescending(t => t.NgayThanhToan)
-                        .Take(5)
-                        .ToListAsync()
-                };
+        //        var model = new DashboardNguoiThueViewModel
+        //        {
+        //            HopDongHienTai = nguoiThue.HopDongs
+        //                .Where(h => h.DaTra == false)
+        //                .OrderByDescending(h => h.NgayBatDau)
+        //                .FirstOrDefault(),
+        //            SuCos = await _context.SuCos
+        //                .Where(s => phongIds.Contains(s.PhongId))
+        //                .OrderByDescending(s => s.NgayBaoCao)
+        //                .Take(5)
+        //                .ToListAsync(),
+        //            HoaDons = await _context.ThanhToans
+        //                .Where(t => t.UserId == nguoiThue.UserId)
+        //                .OrderByDescending(t => t.NgayThanhToan)
+        //                .Take(5)
+        //                .ToListAsync()
+        //        };
 
-                return View(model);
-            }
-            catch (Exception)
-            {
-                return View("Error", "Đã xảy ra lỗi khi tải trang chủ");
-            }
-        }
+        //        return View(model);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return View("Error", "Đã xảy ra lỗi khi tải trang chủ");
+        //    }
+        //}
     }
 }

@@ -4,17 +4,146 @@
     ViewData["Title"] = "Hợp đồng của tôi";
 }
 
-<h2>Hợp đồng hiện tại</h2>
+<style>
+    .contract-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
 
-@if (Model != null)
-{
-    <p><strong>Phòng:</strong> @Model.Phong.TenPhong</p>
-    <p><strong>Tòa nhà:</strong> @Model.Phong.ToaNha.TenToa</p>
-    <p><strong>Ngày bắt đầu:</strong> @Model.NgayBatDau.ToShortDateString()</p>
-    <p><strong>Ngày kết thúc:</strong> @Model.NgayKetThuc.ToShortDateString()</p>
-}
-else
-{
-    <p>Bạn chưa có hợp đồng hiện tại.</p>
-}
+    .contract-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #2e7d32;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #a5d6a7;
+    }
 
+    .contract-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .contract-item {
+        padding: 1rem;
+        background-color: #f5f5f5;
+        border-radius: 6px;
+        border-left: 4px solid #4caf50;
+    }
+
+    .contract-label {
+        font-weight: 600;
+        color: #2e7d32;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .contract-value {
+        font-size: 1.1rem;
+    }
+
+    .price-value {
+        color: #d32f2f;
+        font-weight: 600;
+    }
+
+    .no-contract {
+        text-align: center;
+        padding: 3rem;
+        color: #616161;
+        font-size: 1.1rem;
+    }
+
+    .no-contract-icon {
+        font-size: 3rem;
+        color: #a5d6a7;
+        margin-bottom: 1rem;
+    }
+
+    .contract-status {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 500;
+        margin-top: 1rem;
+    }
+
+    .status-active {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .status-expired {
+        background-color: #ffebee;
+        color: #d32f2f;
+    }
+</style>
+
+<div class="contract-container">
+    <h2 class="contract-title">@ViewData["Title"]</h2>
+
+    @if (Model != null)
+    {
+        var isActive = DateTime.Now >= Model.NgayBatDau && DateTime.Now <= Model.NgayKetThuc;
+
+        <div class="contract-details">
+            <div class="contract-item">
+                <span class="contract-label">Phòng</span>
+                <span class="contract-value">@Model.Phong.TenPhong</span>
+            </div>
+
+            <div class="contract-item">
+                <span class="contract-label">Tòa nhà</span>
+                <span class="contract-value">@Model.Phong.ToaNha.TenToa</span>
+            </div>
+
+            <div class="contract-item">
+                <span class="contract-label">Giá thuê/tháng</span>
+                <span class="contract-value price-value">@string.Format("{0:N0} VNĐ", Model.Phong.GiaTien)</span>
+            </div>
+
+            <div class="contract-item">
+                <span class="contract-label">Số người tối đa</span>
+                <span class="contract-value">@Model.Phong.SoNguoiToiDa người</span>
+            </div>
+
+            <div class="contract-item">
+                <span class="contract-label">Ngày bắt đầu</span>
+                <span class="contract-value">@Model.NgayBatDau.ToString("dd/MM/yyyy")</span>
+            </div>
+
+            <div class="contract-item">
+                <span class="contract-label">Ngày kết thúc</span>
+                <span class="contract-value">@Model.NgayKetThuc.ToString("dd/MM/yyyy")</span>
+            </div>
+
+            <div class="contract-item" style="grid-column: 1 / -1;">
+                <span class="contract-label">Trạng thái hợp đồng</span>
+                <span class="contract-status @(isActive ? "status-active" : "status-expired")">
+                    <i class="fas @(isActive ? "fa-check-circle" : "fa-exclamation-circle")"></i>
+                    @(isActive ? "Đang hoạt động" : "Đã hết hạn")
+                </span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="no-contract">
+            <div class="no-contract-icon">
+                <i class="far fa-file-alt"></i>
+            </div>
+            <p>Bạn chưa có hợp đồng hiện tại</p>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <!-- Thêm Font Awesome cho icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+}

@@ -3,11 +3,42 @@
     ViewData["Title"] = "Xóa Tòa Nhà";
 }
 <h2>@ViewData["Title"]</h2>
+<style>
+    .create-building-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
 
-<p>Are you sure you want to delete the building <strong>@Model.TenToa</strong>?</p>
+    .create-building-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #2e7d32;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #a5d6a7;
+    }
 
-<form asp-action="DeleteConfirmed" method="post">
-    <input type="hidden" name="id" value="@Model.Id" />
-    <button type="submit" class="btn btn-danger">Yes, Delete</button>
-    <a asp-action="Index" class="btn btn-secondary">No, Go Back</a>
-</form>
+</style>
+<div class="create-building-container">
+    <h2 class="create-building-title"> <i class="bi bi-emoji-dizzy"></i> @ViewData["Title"]</h2>
+    <p class="text-center">Bạn có chắc chắn muốn xóa <strong>@Model.TenToa</strong>?</p>
+   @*  <p>Hành động này không thể hoàn tác.</p> *@
+    <div class="alert alert-dismissible alert-danger">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>Có thể xảy ra lỗi</strong> Vui lòng kiểm tra thông tin
+    </div>
+    <form asp-action="DeleteConfirmed" method="post">
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-trash"></i> Xóa
+            </button>
+            <a asp-action="Index" class="btn btn-warning">
+                <i class="bi bi-arrow-left"></i> Quay lại
+            </a>
+        </div>
+    </form>
+</div>

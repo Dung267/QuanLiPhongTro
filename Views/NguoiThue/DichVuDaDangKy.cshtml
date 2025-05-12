@@ -4,35 +4,144 @@
     ViewData["Title"] = "Dịch Vụ Đã Đăng Ký";
 }
 
-<h2>@ViewData["Title"]</h2>
+<style>
+    .service-container {
+        max-width: 1000px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Tên Dịch Vụ</th>
-            <th>Đơn Giá</th>
-            <th>Chỉ Số Cũ</th>
-            <th>Chỉ Số Mới</th>
-            <th>Tháng/Năm</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.DichVu.TenDichVu</td>
-                <td>@item.DichVu.DonGia.ToString("N0")</td>
-                <td>@item.ChiSoCu</td>
-                <td>@item.ChiSoMoi</td>
-                <td>@item.ThangNam.ToString("MM/yyyy")</td>
-                <td>
-                    <form asp-action="HuyDangKyDichVu" method="post" onsubmit="return confirm('Bạn có chắc muốn hủy dịch vụ này?');">
-                        <input type="hidden" name="id" value="@item.Id" />
-                        <button type="submit" class="btn btn-danger btn-sm">Hủy</button>
-                    </form>
-                </td>
-            </tr>
+    .service-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #2e7d32;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #a5d6a7;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1.5rem;
+    }
+
+        .table thead th {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
         }
-    </tbody>
-</table>
+
+        .table tbody tr {
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.3s;
+        }
+
+            .table tbody tr:nth-child(even) {
+                background-color: #f5f5f5;
+            }
+
+            .table tbody tr:hover {
+                background-color: #e8f5e9;
+            }
+
+        .table td {
+            padding: 12px 15px;
+            vertical-align: middle;
+        }
+
+    .price-value {
+        color: #d32f2f;
+        font-weight: 500;
+    }
+
+    .btn-cancel {
+        background-color: #e53935;
+        border: none;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+    }
+
+        .btn-cancel:hover {
+            background-color: #c62828;
+        }
+
+    .no-services {
+        text-align: center;
+        padding: 3rem;
+        color: #616161;
+        font-size: 1.1rem;
+    }
+
+    .no-services-icon {
+        font-size: 3rem;
+        color: #a5d6a7;
+        margin-bottom: 1rem;
+    }
+
+    .action-cell {
+        text-align: center;
+        width: 120px;
+    }
+</style>
+
+<div class="service-container">
+    <h2 class="service-title">@ViewData["Title"]</h2>
+
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tên Dịch Vụ</th>
+                        <th>Đơn Giá</th>
+                        <th>Chỉ Số Cũ</th>
+                        <th>Chỉ Số Mới</th>
+                        <th>Tháng/Năm</th>
+                        <th class="action-cell">Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.DichVu.TenDichVu</td>
+                            <td class="price-value">@item.DichVu.DonGia.ToString("N0") VNĐ</td>
+                            <td>@item.ChiSoCu</td>
+                            <td>@item.ChiSoMoi</td>
+                            <td>@item.ThangNam.ToString("MM/yyyy")</td>
+                            <td class="action-cell">
+                                <form asp-action="HuyDangKyDichVu" method="post" onsubmit="return confirm('Bạn có chắc muốn hủy dịch vụ này?');">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm btn-cancel">
+                                        <i class="fas fa-times"></i> Hủy
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="no-services">
+            <div class="no-services-icon">
+                <i class="fas fa-concierge-bell"></i>
+            </div>
+            <p>Bạn chưa đăng ký dịch vụ nào</p>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <!-- Thêm Font Awesome cho icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+}

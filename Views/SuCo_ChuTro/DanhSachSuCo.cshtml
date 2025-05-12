@@ -4,30 +4,179 @@
     ViewData["Title"] = "Danh Sách Sự Cố";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="incident-container">
+    <div class="incident-header">
+        <h1><i class="fas fa-exclamation-triangle"></i> @ViewData["Title"]</h1>
+        <div class="header-decoration"></div>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Phòng</th>
-            <th>Ngày Báo Cáo</th>
-            <th>Mô Tả</th>
-            <th>Trạng Thái</th>
-            <th>Thao Tác</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var suCo in Model)
-        {
-            <tr>
-                <td>@suCo.Phong.TenPhong</td> <!-- Tên phòng -->
-                <td>@suCo.NgayBaoCao.ToString("dd/MM/yyyy")</td>
-                <td>@suCo.MoTa</td>
-                <td>@(suCo.DaGiaiQuyet ? "Đã Giải Quyết" : "Chưa Giải Quyết")</td>
-                <td>
-                    <a href="@Url.Action("ChiTietSuCo", "SuCo_ChuTro", new { id = suCo.Id })" class="btn btn-primary">Chi Tiết</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="incident-table-container">
+        <table class="incident-table">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-door-open"></i> Phòng</th>
+                    <th><i class="far fa-calendar-alt"></i> Ngày Báo Cáo</th>
+                    <th><i class="fas fa-align-left"></i> Mô Tả</th>
+                    <th><i class="fas fa-check-circle"></i> Trạng Thái</th>
+                    <th><i class="fas fa-cog"></i> Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var suCo in Model)
+                {
+                    <tr class="@(suCo.DaGiaiQuyet ? "resolved" : "pending")">
+                        <td>@suCo.Phong.TenPhong</td>
+                        <td>@suCo.NgayBaoCao.ToString("dd/MM/yyyy")</td>
+                        <td class="description-cell">@suCo.MoTa</td>
+                        <td>
+                            <span class="status-badge @(suCo.DaGiaiQuyet ? "resolved-badge" : "pending-badge")">
+                                @(suCo.DaGiaiQuyet ? "Đã Giải Quyết" : "Chưa Giải Quyết")
+                            </span>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("ChiTietSuCo", "SuCo_ChuTro", new { id = suCo.Id })" class="detail-btn">
+                                <i class="fas fa-search"></i> Chi Tiết
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    :root {
+        --primary-color: #248F55;
+        --primary-light: #4CAF7D;
+        --primary-dark: #1A7741;
+        --secondary-color: #F5F9F7;
+        --accent-color: #FFC107;
+        --text-color: #333333;
+        --light-gray: #F0F4F2;
+        --border-color: #E0E6E3;
+    }
+
+    .incident-container {
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 0 20px;
+        font-family: 'Segoe UI', 'Roboto', sans-serif;
+    }
+
+    .incident-header {
+        text-align: center;
+        margin-bottom: 35px;
+        position: relative;
+    }
+
+    .incident-header h1 {
+        color: var(--primary-color);
+        font-size: 32px;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .incident-header i {
+        margin-right: 12px;
+    }
+
+    .header-decoration {
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color) 0%, #8BC34A 100%);
+        width: 200px;
+        margin: 0 auto;
+        border-radius: 4px;
+        opacity: 0.8;
+    }
+
+    .incident-table-container {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(36, 143, 85, 0.1);
+        overflow: hidden;
+    }
+
+    .incident-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .incident-table th {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 16px;
+        text-align: left;
+        font-weight: 500;
+        position: sticky;
+        top: 0;
+    }
+
+    .incident-table th i {
+        margin-right: 8px;
+    }
+
+    .incident-table td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border-color);
+        vertical-align: middle;
+    }
+
+    .incident-table tbody tr:hover {
+        background-color: var(--secondary-color);
+    }
+
+    .description-cell {
+        max-width: 300px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .pending-badge {
+        background-color: #FFF3E0;
+        color: #E65100;
+    }
+
+    .resolved-badge {
+        background-color: #E8F5E9;
+        color: var(--primary-dark);
+    }
+
+    .detail-btn {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: var(--primary-light);
+        color: white;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .detail-btn:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(36, 143, 85, 0.2);
+    }
+
+    .detail-btn i {
+        margin-right: 6px;
+    }
+
+    /* Zebra striping */
+    .incident-table tbody tr:nth-child(even) {
+        background-color: #F9F9F9;
+    }
+
+    .incident-table tbody tr:nth-child(even):hover {
+        background-color: var(--secondary-color);
+    }    
+</style>

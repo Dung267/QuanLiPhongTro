@@ -13,10 +13,42 @@ namespace QuanLiPhongTro.Controllers
             _logger = logger;
         }
 
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
         public IActionResult Index()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("ChuTro"))
+                    return RedirectToAction("DashboardChuTro");
+
+                if (User.IsInRole("QuanLi"))
+                    return RedirectToAction("DashboardQuanLi");
+
+                if (User.IsInRole("User"))
+                    return RedirectToAction("DashboardNguoiThue");
+            }
+
+            // Trang public n?u ch?a ??ng nh?p
+            return View();
+        }
+        public IActionResult DashboardChuTro()
         {
             return View();
         }
+
+        public IActionResult DashboardQuanLi()
+        {
+            return View();
+        }
+
+        public IActionResult DashboardNguoiThue()
+        {
+            return View();
+        }
+
 
         public IActionResult Privacy()
         {

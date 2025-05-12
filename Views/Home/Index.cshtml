@@ -1,25 +1,23 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-<!-- Bootstrap Carousel Banner (giữ nguyên ảnh cũ) -->
-<div id="bannerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000" data-bs-pause="false">
+<div id="bannerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="false">
     <div class="carousel-inner">
-        <div class="carousel-item active">
-            <a href="https://bandon.vn/uploads/thiet-ke-nha-tro-dep-2020-bandon-11.jpg" target="_blank">
-                <img src="https://bandon.vn/uploads/thiet-ke-nha-tro-dep-2020-bandon-11.jpg" class="d-block w-100 banner-img" alt="Design Image 1">
-            </a>
+        <div class="carousel-item active" style="height: 75vh">
+            <img src="~/images/carouse/Screenshot 2025-05-09 183932.png" class="d-block w-100  h-100  object-fit-cover" alt="Banner 1">
         </div>
-        <div class="carousel-item">
-            <a href="https://spacet-release.s3.ap-southeast-1.amazonaws.com/img/blog/2023-10-04/mau-thiet-ke-toi-gian-651cda65c9649b0ef5c6f426.webp" target="_blank">
-                <img src="https://spacet-release.s3.ap-southeast-1.amazonaws.com/img/blog/2023-10-04/mau-thiet-ke-toi-gian-651cda65c9649b0ef5c6f426.webp" class="d-block w-100 banner-img" alt="Design Image 2">
-            </a>
+        <div class="carousel-item active" style="height: 75vh">
+            <img src="~/images/carouse/Screenshot 2025-05-09 180749.png" class="d-block w-100  h-100  object-fit-cover" alt="Banner 2">
         </div>
-        <div class="carousel-item">
-            <a href="https://spacet-release.s3.ap-southeast-1.amazonaws.com/img/blog/2023-10-04/guong-duoc-van-dung-giup-an-gian-dien-tich-651cda66c9649b0ef5c6f441.webp" target="_blank">
-                <img src="https://spacet-release.s3.ap-southeast-1.amazonaws.com/img/blog/2023-10-04/guong-duoc-van-dung-giup-an-gian-dien-tich-651cda66c9649b0ef5c6f441.webp" class="d-block w-100 banner-img" alt="Design Image 3">
-            </a>
+        <div class="carousel-item" style="height: 75vh">
+            <img src="~/images/carouse/Screenshot 2025-05-09 182457.png" class="d-block w-100 h-100 object-fit-cover" alt="Banner 3">
+        </div>
+        <div class="carousel-item" style="height: 70vh">
+            <img src="~/images/carouse/Screenshot 2025-05-09 182157.png" class="d-block w-100  h-100 object-fit-cover" alt="Banner 4">
         </div>
     </div>
+
+    <!-- Nút điều hướng -->
     <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon"></span>
     </button>
@@ -27,75 +25,72 @@
         <span class="carousel-control-next-icon"></span>
     </button>
 </div>
+<div class="progress">
+    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
+</div>
+<div style="background-color: mediumaquamarine; color:white; padding: 10px;">
+    <marquee behavior="scroll" direction="left" scrollamount="6" onmouseover="this.stop();" onmouseout="this.start();">
+        Chill Home - Giải pháp quản lý BĐS cho thuê hàng đầu Việt Nam. Tự động hóa quy trình thanh toán, quản lý hợp đồng và dịch vụ khách hàng. Đăng ký ngay để trải nghiệm miễn phí!
+    </marquee>
+</div>
 
-<style>
-    #bannerCarousel {
-        width: 100%;
-        height: 100vh; /* Chiều cao full màn hình */
-        overflow: hidden;
-    }
 
-    .banner-img {
-        height: 100vh; /* Chiều cao full màn hình */
-        object-fit: cover; /* Phủ kín không bị méo */
-    }
-</style>
 
 <div class="features-section">
-    <h2 class="section-title text-center mb-5">Chuyển đổi số lĩnh vực BĐS cho thuê cùng ChillHome</h2>
+    <h2 class="section-title text-center mb-5 mt-5 text-success">Chuyển đổi số lĩnh vực BĐS cho thuê cùng ChillHome</h2>
     <div class="row justify-content-center">
         <!-- Card 1 -->
-        <div class="col-md-3 col-sm-6 mb-4">
+        <div class="col-md-3 col-sm-6 mb-4" data-aos="fade-up">
             <div class="feature-card text-center">
-                <img src="https://cdn-icons-png.flaticon.com/512/104/104978.png" alt="Tự động gạch nợ" class="feature-icon mb-3">
+                <img src="https://resident.vn/wp-content/uploads/2024/03/icon_auto_payment.svg" alt="Tự động gạch nợ" class="feature-icon mb-3">
                 <h5 class="feature-title">Hóa đơn tự động</h5>
                 <p>Hóa đơn tự tạo trên hệ thống, tiền trừ vào STK của người thuê nhà, hệ thống xác nhận thu tiền.</p>
             </div>
         </div>
         <!-- Card 2 -->
-        <div class="col-md-3 col-sm-6 mb-4">
+        <div class="col-md-3 col-sm-6 mb-4" data-aos="fade-up" data-aos-delay="100">
             <div class="feature-card text-center">
-                <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" alt="Gửi nhiều hóa đơn" class="feature-icon mb-3">
+                <img src="https://resident.vn/wp-content/uploads/2024/03/icon_bulk_sends.svg" alt="Gửi nhiều hóa đơn" class="feature-icon mb-3">
                 <h5 class="feature-title">Gửi nhiều hóa đơn</h5>
                 <p>Chỉ một thao tác để gửi cho toàn bộ KH qua Zalo, Email, App cư dân.</p>
             </div>
         </div>
         <!-- Card 3 -->
-        <div class="col-md-3 col-sm-6 mb-4">
+        <div class="col-md-3 col-sm-6 mb-4" data-aos="fade-up" data-aos-delay="200">
             <div class="feature-card text-center">
-                <img src="https://cdn-icons-png.flaticon.com/512/3299/3299884.png" alt="Tích hợp IOT" class="feature-icon mb-3">
+                <img src="https://resident.vn/wp-content/uploads/2024/03/icon_iot_devices.svg" alt="Tích hợp IOT" class="feature-icon mb-3">
                 <h5 class="feature-title">Tích hợp IOT</h5>
                 <p>Tích hợp công tơ điện tử giúp đọc ghi chỉ số, ngừng cấp điện từ xa.</p>
             </div>
         </div>
         <!-- Card 4 -->
-        <div class="col-md-3 col-sm-6 mb-4">
+        <div class="col-md-3 col-sm-6 mb-4" data-aos="fade-up" data-aos-delay="300">
             <div class="feature-card text-center">
-                <img src="https://cdn-icons-png.flaticon.com/512/1250/1250678.png" alt="Ký hợp đồng Online" class="feature-icon mb-3">
+                <img src="https://resident.vn/wp-content/uploads/2024/03/icon_econtract.svg" alt="Ký hợp đồng Online" class="feature-icon mb-3">
                 <h5 class="feature-title">Ký hợp đồng Online</h5>
                 <p>KH xem điều khoản và ký trực tiếp trên màn hình điện thoại/máy tính.</p>
             </div>
         </div>
     </div>
 </div>
-
 <style>
+    .features-section {
+        padding-top: 60px; /* Cách phía trên */
+    }
+
     .feature-card {
-        background: #f9f9f9;
+        background: #d4edda;
         border-radius: 12px;
         padding: 20px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
         height: 100%;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .feature-card:hover {
+        .feature-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
         }
-
-    .feature-section .row:not(:last-child) {
-        margin-bottom: 60px;
-    }
 
     .feature-icon {
         width: 50px;
@@ -104,74 +99,87 @@
 
     .feature-title {
         font-weight: 600;
-        margin-bottom: 60px;
+        margin-bottom: 20px;
     }
+
 </style>
+
+
+
 
 <div class="feature-section py-5">
     <div class="container">
         <!-- Block 1 -->
-        <div class="row align-items-center mb-5">
-            <div class="col-md-6 mb-4 mb-md-0">
-                <img src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png" alt="Hỗ trợ kỹ thuật" class="img-fluid">
-            </div>
-            <div class="col-md-6">
-                <h3>Hỗ trợ kỹ thuật 24/7</h3>
-                <p>Chúng tôi cung cấp dịch vụ hỗ trợ kỹ thuật 24/7 giúp khách hàng xử lý sự cố nhanh chóng và đảm bảo hệ thống vận hành ổn định liên tục. Đội ngũ kỹ thuật viên luôn sẵn sàng hỗ trợ qua điện thoại, email hoặc trực tiếp tại hiện trường.</p>
-                <a href="#" class="btn btn-success mt-3">Liên hệ ngay →</a>
+        <div class="section-box mb-5" data-aos="fade-up">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <img src="https://resident.vn/wp-content/uploads/2024/03/feature-notify.svg" alt="Hỗ trợ kỹ thuật" class="img-fluid">
+                </div>
+                <div class="col-md-6">
+                    <h3>Hỗ trợ kỹ thuật 24/7</h3>
+                    <p>Chúng tôi cung cấp dịch vụ hỗ trợ kỹ thuật 24/7 giúp khách hàng xử lý sự cố nhanh chóng và đảm bảo hệ thống vận hành ổn định liên tục...</p>
+                    <a href="#" class="btn btn-success mt-3">Liên hệ ngay →</a>
+                </div>
             </div>
         </div>
 
         <!-- Block 2 -->
-        <div class="row align-items-center mb-5 flex-md-row-reverse">
-            <div class="col-md-6 mb-4 mb-md-0">
-                <img src="https://cdn-icons-png.flaticon.com/512/2920/2920089.png" alt="Quản lý báo cáo" class="img-fluid">
-            </div>
-            <div class="col-md-6">
-                <h3>Quản lý báo cáo thông minh</h3>
-                <p>Hệ thống tự động tạo và xuất báo cáo chi tiết giúp bạn nắm bắt kịp thời mọi số liệu vận hành. Tùy chỉnh định dạng báo cáo theo nhu cầu, hỗ trợ xuất Excel/PDF nhanh chóng, dễ dàng theo dõi và phân tích.</p>
-                <a href="#" class="btn btn-success mt-3">Xem demo →</a>
+        <div class="section-box mb-5" data-aos="fade-up" data-aos-delay="100">
+            <div class="row align-items-center flex-md-row-reverse">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <img src="https://resident.vn/wp-content/uploads/2024/03/feature-finance.svg" alt="Quản lý báo cáo" class="img-fluid">
+                </div>
+                <div class="col-md-6">
+                    <h3>Quản lý báo cáo thông minh</h3>
+                    <p>Hệ thống tự động tạo và xuất báo cáo chi tiết giúp bạn nắm bắt kịp thời mọi số liệu vận hành...</p>
+                    <a href="#" class="btn btn-success mt-3">Xem demo →</a>
+                </div>
             </div>
         </div>
 
         <!-- Block 3 -->
-        <div class="row align-items-center mb-5">
-            <div class="col-md-6 mb-4 mb-md-0">
-                <img src="https://cdn-icons-png.flaticon.com/512/3062/3062634.png" alt="Bảo mật dữ liệu" class="img-fluid">
-            </div>
-            <div class="col-md-6">
-                <h3>Bảo mật dữ liệu tối ưu</h3>
-                <p>Chúng tôi áp dụng các chuẩn bảo mật hàng đầu, mã hóa dữ liệu và phân quyền chặt chẽ giúp bảo vệ tuyệt đối thông tin khách hàng. Đảm bảo an toàn và tuân thủ quy định về bảo mật dữ liệu cá nhân.</p>
-                <a href="#" class="btn btn-success mt-3">Tìm hiểu thêm →</a>
+        <div class="section-box mb-5" data-aos="fade-up" data-aos-delay="200">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <img src="https://resident.vn/wp-content/uploads/2024/03/feature-dashboard.svg" alt="Bảo mật dữ liệu" class="img-fluid">
+                </div>
+                <div class="col-md-6">
+                    <h3>Bảo mật dữ liệu tối ưu</h3>
+                    <p>Chúng tôi áp dụng các chuẩn bảo mật hàng đầu, mã hóa dữ liệu và phân quyền chặt chẽ...</p>
+                    <a href="#" class="btn btn-success mt-3">Tìm hiểu thêm →</a>
+                </div>
             </div>
         </div>
 
         <!-- Block 4 -->
-        <div class="row align-items-center mb-5 flex-md-row-reverse">
-            <div class="col-md-6 mb-4 mb-md-0">
-                <img src="https://cdn-icons-png.flaticon.com/512/2910/2910768.png" alt="Giao diện dễ sử dụng" class="img-fluid">
-            </div>
-            <div class="col-md-6">
-                <h3>Giao diện dễ sử dụng</h3>
-                <p>Thiết kế giao diện thân thiện, đơn giản và trực quan giúp người dùng thao tác nhanh chóng mà không cần đào tạo nhiều. Hỗ trợ đa nền tảng trên máy tính và điện thoại.</p>
-                <a href="#" class="btn btn-success mt-3">Trải nghiệm ngay →</a>
+        <div class="section-box mb-5" data-aos="fade-up" data-aos-delay="300">
+            <div class="row align-items-center flex-md-row-reverse">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <img src="https://resident.vn/wp-content/uploads/2024/03/img_ready.svg" alt="Giao diện dễ sử dụng" class="img-fluid">
+                </div>
+                <div class="col-md-6">
+                    <h3>Giao diện dễ sử dụng</h3>
+                    <p>Thiết kế giao diện thân thiện, đơn giản và trực quan giúp người dùng thao tác nhanh chóng...</p>
+                    <a href="#" class="btn btn-success mt-3">Trải nghiệm ngay →</a>
+                </div>
             </div>
         </div>
 
         <!-- Block 5 -->
-        <div class="row align-items-center">
-            <div class="col-md-6 mb-4 mb-md-0">
-                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Tùy chỉnh linh hoạt" class="img-fluid">
-            </div>
-            <div class="col-md-6">
-                <h3>Tùy chỉnh linh hoạt</h3>
-                <p>Hệ thống hỗ trợ tùy chỉnh linh hoạt theo nhu cầu quản lý riêng biệt của từng doanh nghiệp. Từ quy trình làm việc đến báo cáo, mọi thứ đều có thể cấu hình dễ dàng.</p>
-                <a href="#" class="btn btn-success mt-3">Xem chi tiết →</a>
+        <div class="section-box" data-aos="fade-up" data-aos-delay="400">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <img src="https://app.resident.vn/img/login-v2.72cd8a26.svg" alt="Tùy chỉnh linh hoạt" class="img-fluid">
+                </div>
+                <div class="col-md-6">
+                    <h3>Tùy chỉnh linh hoạt</h3>
+                    <p>Hệ thống hỗ trợ tùy chỉnh linh hoạt theo nhu cầu quản lý riêng biệt của từng doanh nghiệp...</p>
+                    <a href="#" class="btn btn-success mt-3">Xem chi tiết →</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 <style>
     .feature-section h3 {
         font-weight: 700;
@@ -184,71 +192,312 @@
     }
 
     .feature-section img.img-fluid {
-        max-width: 80%; /* Giới hạn tối đa ảnh chỉ chiếm 80% khối chứa */
+        max-width: 70%;
         display: block;
-        margin: 0 auto; /* Canh giữa ảnh */
+        margin: 0 auto;
     }
+
+    .section-box {
+        background: #e8f5e9; /* xanh lá nhạt */
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+    }
+
+        .section-box:hover {
+            transform: translateY(-5px);
+        }   
 </style>
-
-<footer class="footer-section py-5 bg-light">
-    <div class="container">
-        <div class="row">
-            <!-- Column 1 -->
-            <div class="col-md-4 mb-4 mb-md-0">
-                <h5 class="text-success fw-bold">CÔNG TY TNHH ChillHome VIỆT NAM</h5>
-                <p><i class="bi bi-hash"></i> MST: 9999999999</p>
-                <p><i class="bi bi-geo-alt-fill"></i> Số 123 Đường Demo, Phường Mẫu, Quận Test, Thành phố Không Có Thật</p>
-                <p><i class="bi bi-briefcase-fill"></i> Tầng 10, Tòa nhà Ảo, Đường Giả Lập, Thành phố Demo</p>
-                <p><i class="bi bi-envelope-fill"></i> contact@giacongty.vn</p>
-                <p><i class="bi bi-telephone-fill"></i> 0123 456 789</p>
-            </div>
-
-            <!-- Column 2 -->
-            <div class="col-md-4 mb-4 mb-md-0">
-                <h5 class="text-success fw-bold">VỀ GIẢ CÔNG TY</h5>
-                <ul class="list-unstyled">
-                    <li><a href="#">Khách hàng hư cấu</a></li>
-                    <li><a href="#">Đối tác ảo</a></li>
-                    <li><a href="#">Tin tức không thật</a></li>
-                    <li><a href="#">Điều khoản tưởng tượng</a></li>
-                    <li><a href="#">Chính sách minh họa</a></li>
-                </ul>
-            </div>
-
-            <!-- Column 3 -->
-            <div class="col-md-4">
-                <h5 class="text-success fw-bold">LIÊN HỆ & HỖ TRỢ</h5>
-                <ul class="list-unstyled">
-                    <li><a href="#">Liên hệ giả</a></li>
-                    <li><a href="#">Câu hỏi ảo thường gặp</a></li>
-                    <li><a href="#">Hướng dẫn Web demo</a></li>
-                    <li><a href="#">Hướng dẫn App mẫu</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</footer>
-
-<!-- Bootstrap Icons (nếu chưa có) -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
 <style>
-    .footer-section p, .footer-section a {
-        font-size: 14px;
-        color: #333;
-        text-decoration: none;
-    }
-
-        .footer-section a:hover {
-            text-decoration: underline;
-        }
-
-    .footer-section h5 {
-        margin-bottom: 20px;
-    }
-
-    .footer-section i {
-        margin-right: 8px;
-        color: #28a745;
+    body {
+        background-color: #f8f9fa; /* Màu nền */
+        background-image: url('https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/175505/Originals/background-xanh-la%20(2).jpg'); /* Ảnh nền */
+        background-size: cover; /* Phủ kín nền */
+        background-repeat: no-repeat; /* Không lặp ảnh */
+        background-attachment: fixed; /* Cố định nền khi cuộn */
+        background-position: center; /* Căn giữa ảnh nền */
     }
 </style>
+
+
+<div class="testimonial-slider">
+  <div class="testimonial-container">
+    <!-- Thẻ 1 -->
+    <div class="testimonial-card">
+      <div class="company-header">
+        <h1>Tỉng</h1>
+        <h2>TỉngTong</h2>
+      </div>
+      <div class="testimonial-content">
+        <p>Resident đã đồng hành cùng chúng tôi từ những ngày đầu tiên...</p>
+        <div class="author">
+          <strong>Ông Nguyễn Đốc Thái</strong>
+          <span>CEO&Founder TingTong Group</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Thẻ 2 -->
+    <div class="testimonial-card">
+      <div class="company-header">
+        <h1>Nhữa HOLDING</h1>
+        <h2>NineHousing</h2>
+      </div>
+      <div class="testimonial-content">
+        <p><em>Thương hiệu Ninehousing của mình có hơn 200 căn hộ dịch vụ...</em></p>
+        <div class="author">
+          <strong>Bà Dương Thủy Tiên</strong>
+          <span>CEO NineHousing</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Thẻ 3 -->
+    <div class="testimonial-card">
+      <div class="company-header">
+        <h1>BĐS Upland</h1>
+      </div>
+      <div class="testimonial-content">
+        <p><em>Lựa chọn sử dụng phần mềm Resident là quyết định đúng đắn...</em></p>
+        <div class="author">
+          <strong>Ông Nguyễn Việt Hoan</strong>
+          <span>Giám đốc Công ty BĐS Upland</span>
+        </div>
+      </div>
+    </div>    
+    <!-- Thêm các thẻ khác nếu cần -->
+    <!-- Thẻ 4 -->
+    <div class="testimonial-card">
+	  <div class="company-header">
+		<h1>ChillHome</h1>
+		<h2>ChillHome</h2>
+	  </div>
+	  <div class="testimonial-content">
+		<p><em>ChillHome đã sử dụng phần mềm Resident từ những ngày đầu...</em></p>
+		<div class="author">
+		  <strong>Ông Nguyễn Đốc Thái</strong>
+		  <span>CEO ChillHome</span>
+		</div>
+	  </div>
+    </div>
+    <!-- Thẻ 5 -->
+    <div class="testimonial-card">
+	  <div class="company-header">
+		<h1>ChillHome</h1>
+		<h2>ChillHome</h2>
+	  </div>
+	  <div class="testimonial-content">
+		<p><em>ChillHome đã sử dụng phần mềm Resident từ những ngày đầu...</em></p>
+		<div class="author">
+		  <strong>Ông Nguyễn Đốc Thái</strong>
+		  <span>CEO ChillHome</span>
+		</div>
+	  </div>
+      </div>
+	<!-- Thẻ 6 -->
+	<div class="testimonial-card">
+        <div class="company-header">
+            <h1>ChillHome</h1>
+			<h2>ChillHome</h2>
+            </div>
+		<div class="testimonial-content">
+			<p><em>ChillHome đã sử dụng phần mềm Resident từ những ngày đầu...</em></p>
+			<div class="author">
+				<strong>Ông Nguyễn Đốc Thái</strong>
+				<span>CEO ChillHome</span>
+			</div>
+		</div>
+	</div>
+	<!-- Thêm các thẻ khác nếu cần -->
+
+  </div>
+  
+  <!-- Nút điều hướng -->
+  <div class="slider-nav">
+    <button class="nav-dot active"></button>
+    <button class="nav-dot"></button>
+    <!-- Thêm nút nếu có nhiều nhóm thẻ -->
+     <button class="nav-dot"></button>
+  </div>
+</div>
+
+<style>
+/* Reset CSS */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Container chính */
+.testimonial-slider {
+  width: 100%;
+  max-width: 1200px; /* Tăng kích thước để chứa 3 thẻ */
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Container chứa các thẻ */
+.testimonial-container {
+  display: flex;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  gap: 20px;
+  padding-bottom: 20px;
+  width: 100%;
+}
+
+/* Thiết kế thẻ - hiển thị 3 thẻ cùng lúc */
+.testimonial-card {
+  flex: 0 0 calc(33.33% - 14px); /* 3 thẻ trên 1 hàng, trừ đi gap */
+  scroll-snap-align: start;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 25px;
+  min-width: 0; /* Fix cho flex item bị tràn */
+}
+
+
+/* Nội dung thẻ */
+.company-header h1 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 5px;
+}
+.company-header h2 {
+  font-size: 20px;
+  color: #555;
+  margin-bottom: 15px;
+}
+.testimonial-content {
+  color: #444;
+  line-height: 1.6;
+}
+.testimonial-content p {
+  margin-bottom: 20px;
+}
+.author {
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+.author strong {
+  display: block;
+  color: #222;
+  font-size: 16px;
+}
+.author span {
+  color: #666;
+  font-size: 14px;
+}
+
+/* Nút điều hướng */
+.slider-nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+.nav-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background: #e0e0e0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.nav-dot.active {
+  background: #00a0e9;
+  transform: scale(1.2);
+}
+
+/* Ẩn thanh scrollbar */
+.testimonial-container::-webkit-scrollbar {
+  display: none;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const container = document.querySelector('.testimonial-container');
+  const dots = document.querySelectorAll('.nav-dot');
+  const cards = document.querySelectorAll('.testimonial-card');
+  const cardsPerView = 3; // Số thẻ hiển thị cùng lúc
+  
+  // Tính toán số nhóm thẻ
+  const groupCount = Math.ceil(cards.length / cardsPerView);
+  
+  // Tạo đủ số nút chấm
+  const navContainer = document.querySelector('.slider-nav');
+  navContainer.innerHTML = ''; // Xóa nút mẫu
+  
+  for (let i = 0; i < groupCount; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.dataset.index = i;
+    navContainer.appendChild(dot);
+  }
+  
+  // Cập nhật lại nút sau khi tạo
+  const updatedDots = document.querySelectorAll('.nav-dot');
+  
+  // Xử lý click nút
+  updatedDots.forEach(dot => {
+    dot.addEventListener('click', function() {
+      const index = this.dataset.index;
+      const scrollPosition = index * container.offsetWidth;
+      
+      container.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+      });
+      
+      updateActiveDot(index);
+    });
+  });
+  
+  // Tự động cập nhật nút active khi scroll
+  container.addEventListener('scroll', function() {
+    const scrollPosition = container.scrollLeft + container.offsetWidth/2;
+    const activeIndex = Math.min(
+      Math.floor(scrollPosition / container.offsetWidth),
+      groupCount - 1
+    );
+    updateActiveDot(activeIndex);
+  });
+  
+  function updateActiveDot(index) {
+    updatedDots.forEach((dot, i) => {
+      dot.classList.toggle('active', i == index);
+    });
+  }
+  
+  // Responsive - tính lại khi resize
+  function handleResize() {
+    const newCardsPerView = window.innerWidth <= 768 ? 1 : 3;
+    if (newCardsPerView !== cardsPerView) {
+      cardsPerView = newCardsPerView;
+      // Có thể cần tính lại ở đây nếu cần
+    }
+  }
+  
+  window.addEventListener('resize', handleResize);
+});
+</script>
+
+<div class="register-container" style="background-image: url('https://template.canva.com/EAFcAlvtewc/3/0/1600w-pf6SIIKRGlk.jpg'); background-size: cover; background-position: center; padding: 20px; border-radius: 10px; text-align: center;">
+    <h2 style="color: white">Đăng ký trải nghiệm ngay!</h2>
+    <button style="background-color: #248F55; color: white; border: none; padding: 10px 20px; font-size: 18px; cursor: pointer; border-radius: 5px;">Đăng ký miễn phí</button>
+</div>
+
+<script>
+    function register() {
+        alert("Cảm ơn bạn đã đăng ký! Kiểm tra email để nhận hướng dẫn.");
+    }
+</script>

@@ -1,0 +1,211 @@
+﻿@{
+    ViewData["Title"] = "Trang chủ Khách thuê";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #248F55;
+        --primary-light: #a5d6a7;
+        --primary-hover: #388e3c;
+        --sidebar-bg: #e9f4ee;
+        --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    /* #248F55 */
+    body {
+        background-color: #f5f5f5;
+    }
+
+    .sidebar {
+        background-color: var(--sidebar-bg);
+        border-right: 1px solid #e0e0e0;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .sidebar-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        padding-left: 1rem;
+        text-transform: uppercase;
+    }
+
+    .sidebar .nav-link {
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.5rem;
+        color: #417338;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+        }
+
+        .nav-link i {
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+    .main-content {
+        padding: 2rem;
+        background-color: white;
+        min-height: calc(100vh - 56px);
+    }
+
+    .welcome-title {
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: var(--card-shadow);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 100%;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+    .card-title {
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .bi {
+        font-size: 1.2rem;
+    }
+
+    .btn-view {
+        background-color: var(--primary-color);
+        border: none;
+        padding: 0.5rem 1.25rem;
+        margin-top: 1rem;
+    }
+
+        .btn-view:hover {
+            background-color: var(--primary-hover);
+        }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar p-3">
+            <div class="position-sticky">
+                <h5 class="sidebar-title">HỢP ĐỒNG</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="NguoiThue" asp-action="HopDongCuaToi">
+                            <i class="bi bi-file-earmark-text"></i> Hợp đồng
+                        </a>
+                    </li>
+                </ul>
+
+                <h5 class="sidebar-title">DỊCH VỤ</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="NguoiThue" asp-action="DichVuDaDangKy">
+                            <i class="bi bi-list-check"></i> Dịch vụ đã đăng ký
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="NguoiThue" asp-action="DangKySuDungDichVu">
+                            <i class="bi bi-plus-circle"></i> Đăng ký dịch vụ
+                        </a>
+                    </li>
+                </ul>
+
+                <h5 class="sidebar-title">THANH TOÁN</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="ThanhToan" asp-action="Index">
+                            <i class="bi bi-credit-card"></i> Thanh toán
+                        </a>
+                    </li>
+                </ul>
+
+                <h5 class="sidebar-title">SỰ CỐ</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="NguoiThue" asp-action="BaoCaoSuCo">
+                            <i class="bi bi-exclamation-triangle"></i> Báo cáo sự cố
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="NguoiThue" asp-action="DanhSachSuCo">
+                            <i class="bi bi-list-ul"></i> Danh sách sự cố
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
+            <h2 class="welcome-title">Chào mừng trở lại!</h2>
+            <p class="mb-4">Quản lý hợp đồng, dịch vụ và thanh toán của bạn một cách dễ dàng.</p>
+
+            <div class="row mt-4 g-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="bi bi-receipt me-2"></i> Hóa đơn gần nhất</h5>
+                            <p class="card-text">Xem chi tiết hóa đơn thanh toán gần đây của bạn.</p>
+                            <a href="#" class="btn btn-success btn-view">Xem hóa đơn</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="bi bi-check-circle me-2"></i> Trạng thái dịch vụ</h5>
+                            <p class="card-text">Theo dõi tình trạng các dịch vụ bạn đã đăng ký.</p>
+                            <a asp-controller="NguoiThue" asp-action="DichVuDaDangKy" class="btn btn-success btn-view">Xem dịch vụ</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="bi bi-house me-2"></i> Thông tin phòng</h5>
+                            <p class="card-text">Xem chi tiết thông tin phòng bạn đang thuê.</p>
+                            <a asp-controller="NguoiThue" asp-action="HopDongCuaToi" class="btn btn-success btn-view">Xem thông tin</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="bi bi-headset me-2"></i> Hỗ trợ</h5>
+                            <p class="card-text">Liên hệ với chúng tôi nếu bạn cần hỗ trợ.</p>
+                            <a href="#" class="btn btn-success btn-view">Liên hệ ngay</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

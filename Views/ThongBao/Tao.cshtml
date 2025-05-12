@@ -1,0 +1,251 @@
+﻿@model ThongBaoViewModel
+
+<div class="notification-container">
+    <div class="notification-header">
+        <h2><i class="fas fa-bullhorn"></i> Đăng Thông Báo Mới</h2>
+        <div class="header-decoration"></div>
+    </div>
+
+    <form asp-action="Tao" method="post" class="notification-form">
+        <div class="form-group modern-input">
+            <label class="form-label"><i class="far fa-edit"></i> Tiêu đề thông báo</label>
+            <input asp-for="TieuDe" class="form-control" placeholder="Nhập tiêu đề thông báo..." />
+            <div class="focus-border"></div>
+        </div>
+
+        <div class="form-group modern-input">
+            <label class="form-label"><i class="far fa-file-alt"></i> Nội dung chi tiết</label>
+            <textarea asp-for="NoiDung" class="form-control" rows="5" placeholder="Nhập nội dung đầy đủ tại đây..."></textarea>
+            <div class="focus-border"></div>
+        </div>
+
+        <div class="form-group modern-input">
+            <label class="form-label"><i class="far fa-calendar-check"></i> Thời gian hiển thị</label>
+            <div class="duration-selector">
+                <input type="number" class="form-control" name="SoNgayHienThi" min="1" value="7" required />
+                <span class="duration-text">ngày</span>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+            <i class="fas fa-paper-plane"></i> Đăng Thông Báo
+        </button>
+    </form>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="error-message modern-alert">
+            <div class="alert-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>Cần điều chỉnh</strong>
+            </div>
+            <ul class="error-list">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li><i class="fas fa-chevron-right"></i> @error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+</div>
+
+<style>
+    :root {
+        --primary-color: #248F55;
+        --primary-light: #4CAF7D;
+        --primary-dark: #1A7741;
+        --secondary-color: #F5F9F7;
+        --accent-color: #FFC107;
+        --text-color: #333333;
+        --light-gray: #F0F4F2;
+    }
+
+    .notification-container {
+        max-width: 750px;
+        margin: 30px auto;
+        padding: 35px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(36, 143, 85, 0.1);
+        font-family: 'Segoe UI', 'Roboto', sans-serif;
+    }
+
+    .notification-header {
+        text-align: center;
+        margin-bottom: 35px;
+        position: relative;
+    }
+
+        .notification-header h2 {
+            color: var(--primary-color);
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .notification-header i {
+            margin-right: 12px;
+            color: var(--primary-color);
+        }
+
+    .header-decoration {
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color) 0%, #8BC34A 100%);
+        width: 120px;
+        margin: 0 auto;
+        border-radius: 4px;
+        opacity: 0.8;
+    }
+
+    .notification-form {
+        padding: 0 15px;
+    }
+
+    .modern-input {
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 10px;
+        color: var(--primary-dark);
+        font-weight: 500;
+        font-size: 15px;
+    }
+
+        .form-label i {
+            margin-right: 10px;
+            width: 20px;
+            color: var(--primary-color);
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px solid #E0E0E0;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        background-color: var(--secondary-color);
+        color: var(--text-color);
+    }
+
+        .form-control:focus {
+            border-color: var(--primary-light);
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(36, 143, 85, 0.1);
+            outline: none;
+        }
+
+    .focus-border {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary-color);
+        transition: width 0.4s ease;
+    }
+
+    .modern-input:hover .focus-border,
+    .form-control:focus ~ .focus-border {
+        width: 100%;
+    }
+
+    .duration-selector {
+        display: flex;
+        align-items: center;
+    }
+
+        .duration-selector input {
+            width: 80px;
+            margin-right: 12px;
+            text-align: center;
+        }
+
+    .duration-text {
+        color: var(--primary-dark);
+        font-weight: 500;
+        font-size: 14px;
+    }
+
+    .submit-btn {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+        color: white;
+        border: none;
+        padding: 14px 28px;
+        font-size: 16px;
+        font-weight: 500;
+        border-radius: 8px;
+        cursor: pointer;
+        display: block;
+        margin: 40px auto 0;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(36, 143, 85, 0.3);
+        letter-spacing: 0.5px;
+    }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(36, 143, 85, 0.4);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+        }
+
+        .submit-btn i {
+            margin-right: 10px;
+        }
+
+    .modern-alert {
+        background-color: #FFF9E6;
+        border-left: 4px solid var(--accent-color);
+        padding: 18px;
+        border-radius: 8px;
+        margin-top: 30px;
+    }
+
+    .alert-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+        color: #E65100;
+    }
+
+        .alert-header i {
+            margin-right: 12px;
+            font-size: 18px;
+            color: #E65100;
+        }
+
+    .error-list {
+        padding-left: 28px;
+        margin-bottom: 0;
+        color: #D32F2F;
+    }
+
+        .error-list li {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .error-list i {
+            margin-right: 8px;
+            font-size: 10px;
+            color: var(--primary-color);
+        }
+
+    @@media (max-width: 768px) {
+        .notification-container {
+            padding: 25px;
+            margin: 20px 15px;
+        }
+
+        .notification-header h2 {
+            font-size: 24px;
+        }
+
+        .form-control {
+            padding: 12px 14px;
+        }
+    }
+</style>

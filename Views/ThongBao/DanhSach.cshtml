@@ -1,0 +1,153 @@
+﻿@model List<ThongBaoViewModel>
+
+<div class="news-board-container">
+    <div class="news-board-header">
+        <h2><i class="fas fa-newspaper"></i> Bảng Tin</h2>
+        <div class="header-decoration"></div>
+    </div>
+
+    <div class="notification-list">
+        @foreach (var tb in Model)
+        {
+            <div class="notification-card">
+                <div class="notification-badge">
+                    <i class="far fa-bell"></i>
+                </div>
+                <div class="notification-content">
+                    <h3 class="notification-title">@tb.TieuDe</h3>
+                    <p class="notification-text">@tb.NoiDung</p>
+                    <div class="notification-meta">
+                        <span class="meta-item"><i class="fas fa-user"></i> @tb.NguoiDang</span>
+                        <span class="meta-item"><i class="far fa-clock"></i> @tb.NgayDang.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    :root {
+        --primary-color: #248F55;
+        --primary-light: #4CAF7D;
+        --primary-dark: #1A7741;
+        --secondary-color: #F5F9F7;
+        --accent-color: #FFC107;
+        --text-color: #333333;
+        --light-gray: #F0F4F2;
+        --border-color: #E0E6E3;
+    }
+
+    .news-board-container {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 0 20px;
+        font-family: 'Segoe UI', 'Roboto', sans-serif;
+    }
+
+    .news-board-header {
+        text-align: center;
+        margin-bottom: 35px;
+        position: relative;
+    }
+
+    .news-board-header h2 {
+        color: var(--primary-color);
+        font-size: 32px;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .news-board-header i {
+        margin-right: 12px;
+    }
+
+    .header-decoration {
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color) 0%, #8BC34A 100%);
+        width: 150px;
+        margin: 0 auto;
+        border-radius: 4px;
+        opacity: 0.8;
+    }
+
+    .notification-list {
+        display: grid;
+        gap: 20px;
+    }
+
+    .notification-card {
+        display: flex;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(36, 143, 85, 0.08);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-left: 4px solid var(--primary-color);
+    }
+
+    .notification-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(36, 143, 85, 0.12);
+    }
+
+    .notification-badge {
+        background-color: var(--secondary-color);
+        color: var(--primary-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 60px;
+        font-size: 20px;
+    }
+
+    .notification-content {
+        padding: 20px;
+        flex: 1;
+    }
+
+    .notification-title {
+        color: var(--primary-dark);
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .notification-text {
+        color: var(--text-color);
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+
+    .notification-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        font-size: 13px;
+        color: #666;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+    }
+
+    .meta-item i {
+        margin-right: 5px;
+        color: var(--primary-color);
+        font-size: 12px;
+    }
+
+
+    .notification-card {
+        animation: fadeIn 0.5s ease forwards;
+    }
+
+    .notification-card:nth-child(1) { animation-delay: 0.1s; }
+    .notification-card:nth-child(2) { animation-delay: 0.2s; }
+    .notification-card:nth-child(3) { animation-delay: 0.3s; }
+    .notification-card:nth-child(n+4) { animation-delay: 0.4s; }
+</style>
+
+<!-- Thêm Font Awesome cho icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
